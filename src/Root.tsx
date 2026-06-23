@@ -1,17 +1,26 @@
 import "./index.css";
 import { Composition } from "remotion";
-import { MyComposition } from "./Composition";
+import {
+  ExplainerVideo,
+  explainerSchema,
+  calculateExplainerMetadata,
+} from "./compositions/ExplainerVideo";
+import { sampleExplainer } from "./data/sample-explainer";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="MyComp"
-        component={MyComposition}
-        durationInFrames={60}
+        id="ExplainerVideo"
+        component={ExplainerVideo}
+        schema={explainerSchema}
+        defaultProps={sampleExplainer}
+        calculateMetadata={calculateExplainerMetadata}
+        // Fallbacks; duration is overridden by calculateMetadata.
+        durationInFrames={360}
         fps={30}
-        width={1280}
-        height={720}
+        width={1920}
+        height={1080}
       />
     </>
   );

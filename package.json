@@ -1,7 +1,7 @@
 {
   "name": "faceless-studio",
-  "version": "1.0.0",
-  "description": "My Remotion video",
+  "version": "0.1.0",
+  "description": "Code-driven faceless explainer videos with Remotion",
   "repository": {},
   "license": "UNLICENSED",
   "private": true,

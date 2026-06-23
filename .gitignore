@@ -5,3 +5,10 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# Recorded/generated media — large and regenerable. Keep folders, drop heavy files.
+public/assets/**/*.wav
+public/assets/**/*.mp3
+public/assets/**/*.mp4
+public/assets/**/*.mov
+!public/assets/**/.gitkeep

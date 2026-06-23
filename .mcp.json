@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "remotion": {
+      "command": "npx",
+      "args": ["@remotion/mcp@latest"]
+    },
+    "elevenlabs": {
+      "command": "uvx",
+      "args": ["elevenlabs-mcp"],
+      "env": {
+        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
+      }
+    }
+  }
+}
