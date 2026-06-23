@@ -1,0 +1,3 @@
+# Keep shell scripts (incl. the installed git hook) LF so they run under
+# git-bash on Windows — CRLF in a bash script breaks the shebang.
+*.sh text eol=lf
