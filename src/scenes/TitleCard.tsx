@@ -1,13 +1,13 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { theme } from "../theme/tokens";
+import { useBrand } from "../theme/BrandProvider";
 
 export const TitleCard: React.FC<{
   title: string;
   subtitle?: string;
-  accentColor: string;
-}> = ({ title, subtitle, accentColor }) => {
+}> = ({ title, subtitle }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const brand = useBrand();
 
   const enter = spring({ frame, fps, config: { damping: 200 } });
   const opacity = interpolate(frame, [0, 15], [0, 1], {
@@ -22,7 +22,7 @@ export const TitleCard: React.FC<{
         alignItems: "center",
         textAlign: "center",
         padding: 120,
-        fontFamily: theme.fonts.heading,
+        fontFamily: brand.fonts.heading,
       }}
     >
       <div style={{ transform: `translateY(${y}px)`, opacity }}>
@@ -30,7 +30,7 @@ export const TitleCard: React.FC<{
           style={{
             width: 90,
             height: 6,
-            backgroundColor: accentColor,
+            backgroundColor: brand.colors.accent,
             margin: "0 auto 40px",
             borderRadius: 3,
           }}
@@ -39,7 +39,7 @@ export const TitleCard: React.FC<{
           style={{
             fontSize: 96,
             fontWeight: 800,
-            color: theme.colors.text,
+            color: brand.colors.text,
             margin: 0,
             lineHeight: 1.05,
             letterSpacing: -2,
@@ -51,7 +51,7 @@ export const TitleCard: React.FC<{
           <p
             style={{
               fontSize: 40,
-              color: theme.colors.textMuted,
+              color: brand.colors.textMuted,
               marginTop: 32,
               fontWeight: 500,
             }}

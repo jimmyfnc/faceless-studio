@@ -12,3 +12,12 @@ public/assets/**/*.mp3
 public/assets/**/*.mp4
 public/assets/**/*.mov
 !public/assets/**/.gitkeep
+
+# Creators' channels are private content, not part of the shared engine.
+# Only the bundled example ships; keep your own channel out of the public repo
+# (or in a separate private content repo). See docs/brainstorms/voice-driven-pipeline.md.
+/channels/*
+!/channels/example-explainers/
+
+# Whisper.cpp install + models (Stage 2) — large, regenerable.
+/whisper.cpp

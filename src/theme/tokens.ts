@@ -1,11 +1,40 @@
+import { z } from "zod";
+import { zColor } from "@remotion/zod-types";
+
 /**
- * Brand/design tokens — the single source of truth for the channel's look.
+ * Brand/design tokens — the look of a single channel.
  *
- * Because every video imports from here, changing a color or font once
- * re-skins the entire back-catalog. This is the main reason a code-driven
- * explainer channel stays visually consistent at scale.
+ * This is *data*, not engine config: a channel supplies its own
+ * `channels/<id>/brand.json` (validated by `brandSchema`) and the render
+ * wrapper merges it into the video's props. The engine only ships
+ * `defaultBrand` as a fallback, so re-skinning a channel never touches `src/`
+ * or bumps the engine version.
+ *
+ * Because every scene reads the brand (via `useBrand()`), changing one
+ * brand.json re-skins that channel's entire back-catalog.
  */
-export const theme = {
+export const brandSchema = z.object({
+  colors: z.object({
+    bg: zColor(),
+    bgAlt: zColor(),
+    text: zColor(),
+    textMuted: zColor(),
+    accent: zColor(),
+    accent2: zColor(),
+    grid: zColor(),
+    /** Cycled through for multi-series charts. */
+    barColors: z.array(zColor()),
+  }),
+  fonts: z.object({
+    heading: z.string(),
+    body: z.string(),
+  }),
+});
+
+export type Brand = z.infer<typeof brandSchema>;
+
+/** Fallback brand, used when a video supplies no `brand`. */
+export const defaultBrand: Brand = {
   colors: {
     bg: "#0B0F1A",
     bgAlt: "#121826",
@@ -14,7 +43,6 @@ export const theme = {
     accent: "#38BDF8",
     accent2: "#A78BFA",
     grid: "#1E293B",
-    // Cycled through for multi-series charts.
     barColors: ["#38BDF8", "#A78BFA", "#34D399", "#FBBF24", "#FB7185"],
   },
   fonts: {
@@ -23,4 +51,4 @@ export const theme = {
     heading: "Inter, system-ui, -apple-system, Segoe UI, sans-serif",
     body: "Inter, system-ui, -apple-system, Segoe UI, sans-serif",
   },
-} as const;
+};

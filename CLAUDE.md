@@ -4,7 +4,7 @@ Code-driven **faceless explainer videos** with Remotion. The creator's recorded
 voice drives the timeline; charts/diagrams/b-roll sync to the narration. Full
 production pipeline and commands live in [WORKFLOW.md](WORKFLOW.md).
 
-**Current version: 0.1.0** (pre-launch; bumps to `1.0.0` when the channel ships
+**Current version: 0.2.0** (pre-launch; bumps to `1.0.0` when the channel ships
 its first real video).
 
 ## What this project is
@@ -19,20 +19,29 @@ its first real video).
 ## Key commands
 
 ```bash
-npm run dev                                   # Remotion Studio: preview + polish
-npx remotion render ExplainerVideo out/<slug>.mp4
-node tools/comfyui-generate.mjs --workflow workflows/x.json --out public/assets/<slug> --prompt "..."
+npm run dev                                   # Studio on the engine sample
+npm run studio -- <channel> <slug>            # Studio on a channel video (merges brand+props)
+npm run render -- <channel> <slug>            # render → out/<channel>-<slug>.mp4
+node tools/comfyui-generate.mjs --workflow workflows/x.json --out public/assets/<channel>/<slug> --prompt "..."
 ./scripts/install-hooks.sh                    # run once per clone to install the pre-commit hook
 ```
 
-## Engine vs content (important)
+## Engine vs brand vs content (important)
 
-- **`src/`** is the *engine* (compositions, scenes, library). Changes here are
-  product changes and **must bump the version** (the hook enforces it).
-- **Per-video content** — scripts (`scripts/`), assets (`public/assets/<slug>/`),
-  and per-video props — is *not* a product change and should **not** bump the
-  version. Keep new-video props out of `src/` (see the roadmap item "per-video
-  content loading"). `src/data/sample-explainer.ts` is the engine's demo, not a video.
+Three layers; only the first bumps the version:
+
+- **Engine — `src/`** (compositions, scenes, schema, `defaultBrand`). Changes here
+  are product changes and **must bump the version** (the hook enforces it).
+- **Brand — `channels/<id>/brand.json`** (colors + fonts, validates against
+  `brandSchema`). Re-skinning a channel is content, **not** a version bump.
+- **Content — `channels/<id>/videos/<slug>/`** (`script.md`, `props.json`,
+  `captions.json`) + `public/assets/<id>/<slug>/` media. Making a video is **not**
+  a version bump.
+
+Making or re-skinning a video must never touch `src/`. The render/studio wrappers
+merge `brand.json` into `props.json` (which validates against `explainerSchema`).
+`src/data/sample-explainer.ts` is the engine's no-content demo, not a video. Only
+`channels/example-explainers/` is tracked; real channels are git-ignored.
 
 ## Versioning conventions
 

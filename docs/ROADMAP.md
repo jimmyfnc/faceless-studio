@@ -7,15 +7,15 @@ Effort: 🟢 small · 🟡 medium · 🔴 large · ⚫ epic
 
 ## Pipeline
 
-The three 🟡 items below are sequenced as one dependency chain in
-[brainstorms/voice-driven-pipeline.md](brainstorms/voice-driven-pipeline.md)
-(build order: per-video loading → Whisper → auto-draft).
+The 🟡 items below are sequenced as one dependency chain in
+[brainstorms/voice-driven-pipeline.md](brainstorms/voice-driven-pipeline.md).
+**Stage 1 (multi-channel foundation + brand-as-data) shipped in `0.2.0`.**
+Remaining build order: Whisper → auto-draft.
 
 | Idea | Effort | Notes |
 |---|---|---|
-| Multi-channel foundation (content + brand-as-data) | 🟡 | **Stage 1 → 0.2.0.** `channels/<id>/{brand.json,videos/<slug>/props.json}` rendered via a brand+props merge wrapper, so making a channel/video never touches `src/`. Pulls the theme out of `src/` (brandSchema + `useBrand()`); `calculateMetadata` derives duration from the VO; rewrites README + setup/onboarding docs. See brainstorm. |
-| Whisper transcription step | 🟡 | **Stage 2 → 0.3.0.** `@remotion/install-whisper-cpp` → word timestamps → `captions.json`; makes "voice drives timeline" real. See brainstorm. |
-| Script → auto-draft generator | 🟡 | **Stage 3 → 0.4.0.** parse `scripts/<slug>.md` sections + align to captions → emit `props.json`. See brainstorm. |
+| Whisper transcription step | 🟡 | **Stage 2 → 0.3.0.** `@remotion/install-whisper-cpp` → word timestamps → `channels/<id>/videos/<slug>/captions.json`; makes "voice drives timeline" real. See brainstorm. |
+| Script → auto-draft generator | 🟡 | **Stage 3 → 0.4.0.** parse `script.md` sections + align to captions → emit `props.json`. See brainstorm. |
 | Vertical Shorts variant | 🟢 | second `<Composition>` reusing `ExplainerVideo` at 1080×1920 |
 | Brand font | 🟢 | swap system font for a real one via `@remotion/google-fonts` |
 | End-to-end auto mode | 🔴 | topic → script → ElevenLabs scratch VO → draft → render, one command |

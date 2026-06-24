@@ -25,8 +25,15 @@ Start early, and the curve does the work for you.
 
 ### Pipeline notes
 
-1. Record yourself reading the lines above → `public/assets/compound-interest/vo.wav`
-2. Transcribe with Whisper → word-level captions JSON
-3. Auto-draft maps each `##` section to a scene; `[VISUAL: ...]` becomes a
-   ComfyUI/Nano-Banana generation or a chart with this data
-4. Polish in Remotion Studio, then render
+This script lives at `channels/example-explainers/videos/compound-interest/script.md`.
+Its slug is `compound-interest` in channel `example-explainers`.
+
+1. Record yourself reading the lines above →
+   `public/assets/example-explainers/compound-interest/vo.wav`
+2. Transcribe (Stage 2, Whisper) → `../captions.json` (word-level timestamps)
+3. Auto-draft (Stage 3) maps each `##` section to a scene and aligns it to the
+   captions → `props.json`; `[VISUAL: ...]` becomes a ComfyUI/Nano-Banana
+   generation or a chart with this data
+4. Polish in Remotion Studio, then render:
+   `npm run studio -- example-explainers compound-interest`
+   `npm run render -- example-explainers compound-interest`

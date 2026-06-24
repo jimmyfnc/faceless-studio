@@ -1,14 +1,15 @@
 import type { ExplainerProps } from "../compositions/ExplainerVideo";
 
 /**
- * Sample props so the composition renders something real out of the box.
- * Replace this per-video — in the pipeline it's generated from your script +
- * Whisper captions. The captions below are illustrative (no VO is attached
- * yet); they demo the synced word highlight over the opening seconds.
+ * The engine's no-content default — what `npm run dev` shows out of the box.
+ * It omits `brand`, so it renders with `defaultBrand`. Real videos live under
+ * `channels/<id>/videos/<slug>/props.json` (see the example channel); in the
+ * pipeline those are generated from your script + Whisper captions. The
+ * captions below are illustrative (no VO attached); they demo the synced word
+ * highlight over the opening seconds.
  */
 export const sampleExplainer: ExplainerProps = {
-  accentColor: "#38BDF8",
-  // voiceoverSrc: "assets/compound-interest/vo.wav", // <- drop your VO here
+  // voiceoverSrc: "assets/example-explainers/compound-interest/vo.wav",
   sections: [
     {
       kind: "title",

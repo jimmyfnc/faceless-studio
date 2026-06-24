@@ -1,16 +1,17 @@
 {
   "name": "faceless-studio",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Code-driven faceless explainer videos with Remotion",
   "repository": {},
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.482",
+    "@remotion/media-parser": "4.0.482",
+    "@remotion/tailwind-v4": "4.0.482",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.482",
-    "@remotion/tailwind-v4": "4.0.482",
     "tailwindcss": "4.0.0"
   },
   "devDependencies": {
@@ -23,6 +24,8 @@
   },
   "scripts": {
     "dev": "remotion studio",
+    "studio": "node tools/studio.mjs",
+    "render": "node tools/render.mjs",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"

@@ -1,13 +1,13 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { theme } from "../theme/tokens";
+import { useBrand } from "../theme/BrandProvider";
 
 export const TextScene: React.FC<{
   heading: string;
   body?: string;
-  accentColor: string;
-}> = ({ heading, body, accentColor }) => {
+}> = ({ heading, body }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const brand = useBrand();
 
   const enter = spring({ frame, fps, config: { damping: 200 } });
   const y = interpolate(enter, [0, 1], [30, 0]);
@@ -20,7 +20,7 @@ export const TextScene: React.FC<{
       style={{
         justifyContent: "center",
         padding: 140,
-        fontFamily: theme.fonts.heading,
+        fontFamily: brand.fonts.heading,
       }}
     >
       <div style={{ transform: `translateY(${y}px)`, opacity, maxWidth: 1300 }}>
@@ -28,7 +28,7 @@ export const TextScene: React.FC<{
           style={{
             fontSize: 84,
             fontWeight: 800,
-            color: theme.colors.text,
+            color: brand.colors.text,
             margin: 0,
             lineHeight: 1.1,
             letterSpacing: -1.5,
@@ -40,10 +40,10 @@ export const TextScene: React.FC<{
           <p
             style={{
               fontSize: 44,
-              color: theme.colors.textMuted,
+              color: brand.colors.textMuted,
               marginTop: 28,
               lineHeight: 1.4,
-              borderLeft: `6px solid ${accentColor}`,
+              borderLeft: `6px solid ${brand.colors.accent}`,
               paddingLeft: 28,
             }}
           >

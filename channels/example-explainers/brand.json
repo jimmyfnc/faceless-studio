@@ -1,0 +1,16 @@
+{
+  "colors": {
+    "bg": "#0B0F1A",
+    "bgAlt": "#121826",
+    "text": "#F8FAFC",
+    "textMuted": "#94A3B8",
+    "accent": "#38BDF8",
+    "accent2": "#A78BFA",
+    "grid": "#1E293B",
+    "barColors": ["#38BDF8", "#A78BFA", "#34D399", "#FBBF24", "#FB7185"]
+  },
+  "fonts": {
+    "heading": "Inter, system-ui, -apple-system, Segoe UI, sans-serif",
+    "body": "Inter, system-ui, -apple-system, Segoe UI, sans-serif"
+  }
+}

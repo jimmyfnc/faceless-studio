@@ -1,5 +1,5 @@
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { theme } from "../theme/tokens";
+import { useBrand } from "../theme/BrandProvider";
 import type { CaptionWord } from "../lib/captions";
 
 /**
@@ -11,12 +11,12 @@ import type { CaptionWord } from "../lib/captions";
  */
 export const CaptionTrack: React.FC<{
   words: CaptionWord[];
-  accentColor: string;
   /** Words shown on screen around the active word. */
   windowSize?: number;
-}> = ({ words, accentColor, windowSize = 9 }) => {
+}> = ({ words, windowSize = 9 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const brand = useBrand();
   const ms = (frame / fps) * 1000;
 
   const activeIdx = words.findIndex((w) => ms >= w.startMs && ms < w.endMs);
@@ -38,7 +38,7 @@ export const CaptionTrack: React.FC<{
         style={{
           maxWidth: 1400,
           textAlign: "center",
-          fontFamily: theme.fonts.body,
+          fontFamily: brand.fonts.body,
           fontSize: 56,
           fontWeight: 800,
           lineHeight: 1.3,
@@ -51,7 +51,7 @@ export const CaptionTrack: React.FC<{
             <span
               key={`${w.startMs}-${i}`}
               style={{
-                color: isActive ? accentColor : theme.colors.text,
+                color: isActive ? brand.colors.accent : brand.colors.text,
                 display: "inline-block",
                 margin: "0 8px",
                 transform: isActive ? "scale(1.08)" : "scale(1)",

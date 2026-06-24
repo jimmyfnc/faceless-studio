@@ -1,5 +1,5 @@
 import { AbsoluteFill, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { theme } from "../theme/tokens";
+import { useBrand } from "../theme/BrandProvider";
 
 export type BarDatum = { label: string; value: number };
 
@@ -14,28 +14,28 @@ const STAGGER = 6;
 export const BarChartScene: React.FC<{
   heading: string;
   data: BarDatum[];
-  accentColor: string;
-}> = ({ heading, data, accentColor }) => {
+}> = ({ heading, data }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const brand = useBrand();
   const max = Math.max(...data.map((d) => d.value), 1);
 
   return (
     <AbsoluteFill
-      style={{ padding: 100, fontFamily: theme.fonts.heading, justifyContent: "flex-end" }}
+      style={{ padding: 100, fontFamily: brand.fonts.heading, justifyContent: "flex-end" }}
     >
       <h1
         style={{
           fontSize: 56,
           fontWeight: 800,
-          color: theme.colors.text,
+          color: brand.colors.text,
           margin: "0 0 56px",
           letterSpacing: -1,
         }}
       >
         <span
           style={{
-            borderBottom: `6px solid ${accentColor}`,
+            borderBottom: `6px solid ${brand.colors.accent}`,
             paddingBottom: 10,
           }}
         >
@@ -59,7 +59,7 @@ export const BarChartScene: React.FC<{
             config: { damping: 200 },
           });
           const h = (d.value / max) * CHART_HEIGHT * grow;
-          const color = theme.colors.barColors[i % theme.colors.barColors.length];
+          const color = brand.colors.barColors[i % brand.colors.barColors.length];
 
           return (
             <div
@@ -76,7 +76,7 @@ export const BarChartScene: React.FC<{
                 style={{
                   fontSize: 34,
                   fontWeight: 700,
-                  color: theme.colors.text,
+                  color: brand.colors.text,
                   marginBottom: 14,
                   opacity: grow,
                 }}
@@ -94,7 +94,7 @@ export const BarChartScene: React.FC<{
               <div
                 style={{
                   fontSize: 28,
-                  color: theme.colors.textMuted,
+                  color: brand.colors.textMuted,
                   marginTop: 18,
                   fontWeight: 500,
                 }}
