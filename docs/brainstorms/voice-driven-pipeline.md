@@ -1,131 +1,188 @@
-# Brainstorm: the voice-driven pipeline
+# Brainstorm: the voice-driven, multi-channel pipeline
 
-**Goal:** make the channel's headline promise — *"your recorded voice drives the
-timeline"* — literally true. Today section durations and captions are
-hand-authored numbers in `src/data/sample-explainer.ts`. This plan turns a
-recorded `vo.wav` + a written script into a drafted, voice-timed video without
-touching the `src/` engine.
+**Two goals, one plan:**
 
-This single doc sequences the three 🟡 Pipeline roadmap items, because they form
-one dependency chain and share one set of data contracts. Build them in order;
-each ships as its own version.
+1. **Reusable, not personal** — anyone who pulls the repo gets a code-driven
+   *engine*, not the creator's AI-explainer channel. Different people make
+   different videos on different subjects without editing `src/` or inheriting
+   someone else's brand.
+2. **Voice drives the timeline** — a recorded `vo.wav` + a written script become a
+   drafted, voice-timed video automatically.
+
+These share one foundation: separating the shared **engine** from per-creator
+**brand** and per-video **content**. Build the foundation first (Stage 1), then
+the voice pipeline on top (Stages 2–3). Each stage ships as its own version.
 
 ```
-scripts/<slug>.md  ──┐
-                     ├─►  tools/auto-draft.mjs  ──►  videos/<slug>/props.json  ──►  render
-public/assets/<slug>/vo.wav ─► tools/transcribe.mjs ─► videos/<slug>/captions.json ─┘
+channels/<id>/brand.json ──────────────┐
+channels/<id>/videos/<slug>/script.md ──┤  tools/auto-draft  ─►  props.json ─┐
+public/assets/<id>/<slug>/vo.wav ─► tools/transcribe ─► captions.json ───────┤
+                                                                merge brand+props ─► render
 ```
+
+---
+
+## The three layers (the whole idea)
+
+| Layer | Lives in | Versioned? | Who owns it |
+|---|---|---|---|
+| **Engine** | `src/` | yes — semver `x.y.z` | the project (shared by everyone) |
+| **Brand** | `channels/<id>/brand.json` | no (content) | each creator |
+| **Content** | `channels/<id>/videos/<slug>/` + `public/assets/<id>/<slug>/` | no (content) | each creator |
+
+The rule: **making a video — or re-skinning a channel — must never touch `src/`
+or bump the engine version.** That is what keeps a puller from being forced into
+the original creator's subject or look.
 
 ---
 
 ## Why this order
 
-| # | Stage | Ships | Depends on | Why it must come first / here |
+| # | Stage | Ships | Depends on | Why here |
 |---|---|---|---|---|
-| 1 | **Per-video content loading** | `0.2.0` | — | Defines *where* a video's data lives (`videos/<slug>/`). The next two stages need a target to write to. Resolves the engine-vs-content tension in CLAUDE.md. |
-| 2 | **Whisper transcription** | `0.3.0` | stage 1 | Produces the word timings (`captions.json`) that everything downstream consumes. |
-| 3 | **Script → auto-draft** | `0.4.0` | stages 1 + 2 | Consumes script + captions, emits the `props.json` from stage 1. The actual "auto-draft" pass. |
+| 1 | **Multi-channel foundation** (content + brand-as-data) | `0.2.0` | — | Defines *where* brand and content live and pulls the hardcoded theme out of `src/`. Everything else writes into this structure. |
+| 2 | **Whisper transcription** | `0.3.0` | stage 1 | Produces the word timings (`captions.json`) the draft step consumes. |
+| 3 | **Script → auto-draft** | `0.4.0` | 1 + 2 | Aligns script to captions, emits `props.json`. The "auto-draft" pass. |
 
-The two 🟢 quick wins (Shorts variant, brand font) are independent and can slot
-in anywhere.
+Quick wins (Shorts variant, brand font) are independent and slot in anywhere.
 
 ---
 
-## The data contracts (pin these before any code)
+## Data contracts (pin before any code)
 
-### Directory layout — one slug ties three places together
+### Directory layout — channel-scoped
 
 ```
-scripts/<slug>.md                 # the written script (tracked)
-public/assets/<slug>/vo.wav       # recorded voiceover (gitignored media)
-public/assets/<slug>/*.png        # generated visuals (gitignored)
-videos/<slug>/captions.json       # Whisper output    (tracked — small, regenerable)
-videos/<slug>/props.json          # final per-video props (tracked)
+src/                                  # ENGINE — shared, versioned, never edited to make a video
+  theme/tokens.ts                     #   → defaultBrand + brandSchema (fallback only)
+
+channels/                             # creators' spaces — NOT the engine
+  example-explainers/                 #   the one example shipped with the repo (a neutral starter)
+    brand.json                        #     colors + fonts for this channel
+    videos/
+      compound-interest/
+        props.json                    #     a video = data; validates against explainerSchema
+        script.md                     #     the written script (moves here from scripts/)
+  <your-channel>/                     #   a real channel (see "Keeping content private")
+
+public/assets/<id>/<slug>/            # media (vo.wav, images) — must live under public/ for staticFile()
 ```
 
-`videos/` is **new** and lives outside `src/`, so creating a video never bumps
-the engine version. `props.json` and `captions.json` are tracked (small JSON,
-the editable source of a video); the `.wav`/`.png` media stays gitignored as
-today.
+`channels/` is **new** and outside `src/`. The legacy `scripts/<slug>.md` moves
+under its channel; `src/data/sample-explainer.ts` stays only as the engine's
+no-content default.
 
-### `props.json` — IS a serialized `ExplainerProps`
+### `brand.json` — IS a `brandSchema`
 
-The contract is simply: **`props.json` validates against the existing
-`explainerSchema`.** No new schema to invent. Rendered via Remotion's `--props`:
+`src/theme/tokens.ts` becomes two exports: a Zod `brandSchema` and a
+`defaultBrand` (today's values). A channel's `brand.json` validates against
+`brandSchema` and overrides the default:
 
 ```jsonc
 {
-  "accentColor": "#38BDF8",
-  "voiceoverSrc": "assets/compound-interest/vo.wav",
-  "sections": [
-    { "kind": "title", "durationInFrames": 90,  "text": "How Compound Interest Works", "subtitle": "A 60-second explainer" },
-    { "kind": "bars",  "durationInFrames": 150, "heading": "$1,000 at 8% / year", "data": [ { "label": "Year 0", "value": 1000 } ] },
-    { "kind": "text",  "durationInFrames": 120, "heading": "Time beats timing.", "body": "Start early." }
-  ],
-  "captions": [ { "text": "How", "startMs": 200, "endMs": 520 } ]
+  "colors": {
+    "bg": "#0B0F1A", "bgAlt": "#121826", "text": "#F8FAFC", "textMuted": "#94A3B8",
+    "accent": "#38BDF8", "accent2": "#A78BFA", "grid": "#1E293B",
+    "barColors": ["#38BDF8", "#A78BFA", "#34D399", "#FBBF24", "#FB7185"]
+  },
+  "fonts": { "heading": "Inter, system-ui, sans-serif", "body": "Inter, system-ui, sans-serif" }
 }
 ```
 
+**Engine change:** scenes currently `import { theme }` directly. They switch to a
+`useBrand()` hook fed by a `<BrandProvider>` that `ExplainerVideo` seeds from
+props. `defaultBrand` is the fallback when no brand is supplied. The standalone
+`accentColor` prop folds into `brand.colors.accent` (a clean breaking change,
+fine at pre-launch `0.x`).
+
+### `props.json` — IS a serialized `ExplainerProps`
+
+No new schema: `props.json` validates against the existing `explainerSchema`
+(sections + captions + `voiceoverSrc`). Brand is **not** duplicated into every
+video — it's merged in at render time (below).
+
 ### `captions.json` — IS the engine's `CaptionsJson`
 
-`src/lib/captions.ts` already defines `CaptionsJson = { words: CaptionWord[] }`
-and `CaptionWord = { text, startMs, endMs }`. Whisper's `toCaptions()` returns
-exactly that shape (plus extra `timestampMs`/`confidence` we can drop). So
-stage 2 writes `{ "words": [...] }` and stage 3 reads it. No new type.
+`src/lib/captions.ts` already defines `CaptionsJson = { words: CaptionWord[] }`,
+`CaptionWord = { text, startMs, endMs }`. Whisper's `toCaptions()` returns
+exactly that. Stage 2 writes it, Stage 3 reads it. No new type.
 
-### Render / preview invocation (Windows-aware)
+### Render / preview — a thin wrapper merges brand + props
+
+`--props` takes one JSON object, and on Windows shells inline JSON is unsupported
+(the shell strips `"`), so we always pass a **file**. A small Node wrapper reads
+`brand.json` + `props.json`, merges them, writes a temp file, and invokes
+Remotion:
 
 ```bash
-# Render a specific video — NOTE: file path, not inline JSON.
-npx remotion render ExplainerVideo --props=videos/<slug>/props.json out/<slug>.mp4
-
-# Preview/polish that same video in Studio:
-npm run dev -- --props=videos/<slug>/props.json
+npm run render -- <channel> <slug>        # tools/render.mjs → remotion render --props=<merged tmp>
+npm run studio -- <channel> <slug>        # tools/studio.mjs → remotion studio --props=<merged tmp>
+npm run dev                               # engine default (sample-explainer), unchanged
 ```
 
-> ⚠️ Remotion docs: *inline* `--props='{...}'` JSON is **unsupported on Windows
-> shells** (the shell strips `"`). A `props.json` file is mandatory here, which
-> is exactly the convention above.
+The wrapper runs in Node (full fs access), so reading both files and merging
+`{ ...props, brand }` is trivial — no need to put `props.json` under `public/`.
+
+### Keeping content private
+
+Default `.gitignore`: track `channels/example-*/` only, ignore other
+`channels/*`. So the shared engine never ships a real creator's videos, and a
+public copy is automatically generic.
+
+> Decision for the owner: while this repo is private you can keep your own
+> channel tracked here for backup; before making the engine public (or a
+> template), move your channel to a separate private content repo or rely on the
+> gitignore. Flagged, not forced.
 
 ---
 
-## Stage 1 — Per-video content loading  → `0.2.0`
+## Stage 1 — Multi-channel foundation  → `0.2.0`
 
-**Outcome:** a real video renders from `videos/<slug>/props.json` with zero edits
-to `src/data/`.
+**Outcome:** a video renders from `channels/<id>/videos/<slug>/props.json` with a
+per-channel `brand.json`, and zero edits to `src/` are needed to make a new
+channel or video.
 
-- **Convention + demo:** create `videos/compound-interest/props.json` (the
-  current `sampleExplainer`, serialized). Prove `--props` renders it. Keep
-  `sampleExplainer` in `src/data/` as the engine's no-VO default only.
-- **Engine change (the part that earns the version bump):** make
-  `calculateExplainerMetadata` `async`, and when `voiceoverSrc` is set, derive
-  total `durationInFrames` from the audio via `parseMedia()` so the video always
-  matches the VO length. Fall back to sum-of-sections when there's no VO (today's
-  behavior, keeps the sample working).
-- **Docs:** add the render + Studio commands above to WORKFLOW.md, with the
-  Windows note.
-- **`.gitignore`/tracking:** confirm `videos/**/*.json` is tracked; media under
-  `public/assets/` stays ignored.
+- **Brand-as-data (engine):** split `tokens.ts` into `brandSchema` + `defaultBrand`;
+  add `<BrandProvider>` + `useBrand()`; convert all four scenes to read brand
+  from the hook; fold `accentColor` into `brand.colors.accent`.
+- **Channel structure:** create `channels/example-explainers/` with `brand.json`
+  and `videos/compound-interest/{props.json,script.md}` (the current sample,
+  serialized). Move `scripts/sample-topic.md` in as `script.md`.
+- **Render ergonomics:** `tools/render.mjs` + `tools/studio.mjs` + npm scripts.
+- **Duration from VO:** make `calculateExplainerMetadata` async; when
+  `voiceoverSrc` is set, derive total duration via `parseMedia()` (authoritative,
+  matches the VO); else sum sections (today's behavior — keeps the sample working).
+- **`.gitignore`:** the `channels/*` rule above.
+- **Onboarding docs (front door for new creators):**
+  - Rewrite `README.md` — it's currently default Remotion boilerplate. New content:
+    what the project is, the engine/brand/content three-layer model, a quick start,
+    and **"make your own channel"** in ~5 steps.
+  - A **setup / prerequisites** section covering everything that must be hooked up
+    to work: Node + `npm i`; `./scripts/install-hooks.sh` (once per clone);
+    **ComfyUI** (optional — local image gen, host/port, `tools/comfyui-generate.mjs`);
+    **ElevenLabs** key (optional — scratch TTS via MCP, `setx ELEVENLABS_API_KEY`);
+    Whisper (auto-installs in Stage 2); and which pieces are required vs optional.
+  - Update WORKFLOW.md (new channel commands + layout) and CLAUDE.md (the
+    three-layer rule). Keep the deep pipeline in WORKFLOW.md; keep README skimmable.
 
-**Risk / decision:** if total-from-audio ≠ sum-of-sections, the last
-`<Series.Sequence>` could clip or leave a gap. Decision: section durations are
-authoritative for *sequencing*; treat `parseMedia` duration as the *total* and
-pad/trim the final section to close the gap. (Stage 3 makes sections sum to the
-VO naturally, so this is mostly a guard.)
+**Risk / decision:** if VO-derived total ≠ sum of sections, the last
+`<Series.Sequence>` clips or gaps. Decision: total from `parseMedia` is
+authoritative; pad/trim the final section. (Stage 3 makes sections sum to the VO
+naturally, so it's mostly a guard.)
 
-**Acceptance:** `npx remotion render ExplainerVideo --props=videos/compound-interest/props.json out/ci.mp4`
-produces a video whose length equals the VO (once a VO exists); `npm run lint` clean.
+**Acceptance:** `npm run render -- example-explainers compound-interest` produces
+a video; changing `brand.json` re-skins it with no `src/` edit; `npm run lint` clean.
 
-**Add dep:** `@remotion/media-parser` (pinned to `4.0.482`).
+**Add dep:** `@remotion/media-parser` (pinned `4.0.482`).
 
 ---
 
 ## Stage 2 — Whisper transcription  → `0.3.0`
 
-**Outcome:** `tools/transcribe.mjs <slug>` turns `vo.wav` into
-`videos/<slug>/captions.json`.
+**Outcome:** `tools/transcribe.mjs <channel> <slug>` turns `vo.wav` into
+`channels/<id>/videos/<slug>/captions.json`.
 
-Grounded API (from `@remotion/install-whisper-cpp`, Remotion 4.0.x):
+Grounded API (`@remotion/install-whisper-cpp`, Remotion 4.0.x):
 
 ```js
 import { installWhisperCpp, downloadWhisperModel, transcribe, toCaptions } from "@remotion/install-whisper-cpp";
@@ -140,74 +197,63 @@ const { captions } = toCaptions({ whisperCppOutput: transcription });
 // write { words: captions.map(({text,startMs,endMs}) => ({text,startMs,endMs})) }
 ```
 
-- **16kHz requirement:** `transcribe` needs a 16-bit/16kHz WAV. Add a pre-step
-  that resamples `vo.wav` → a temp 16kHz wav (ffmpeg; Remotion bundles one, else
-  document the dependency). Don't mutate the user's original `vo.wav`.
-- **Model:** default `medium.en` (good accuracy for English explainers); expose
-  `--model` to drop to `base.en` for speed. whisper.cpp + model install once,
-  cached to a gitignored `whisper.cpp/` folder.
-- **Wiring:** a thin `npm run transcribe -- <slug>` script.
+- **16kHz requirement:** `transcribe` needs a 16-bit/16kHz WAV; add a resample
+  pre-step (ffmpeg) to a temp file, never mutating the original `vo.wav`.
+- **Model:** default `medium.en`; `--model base.en` for speed. whisper.cpp +
+  model install once, cached to a gitignored `whisper.cpp/` folder.
+- **Wiring:** `npm run transcribe -- <channel> <slug>`.
 
-**Risk:** first-run install is large/slow and platform-specific. Mitigation:
-install is idempotent + cached; print clear progress (`onProgress`).
+**Risk:** first-run install is large/platform-specific. Mitigation: idempotent +
+cached install, `onProgress` logging.
 
-**Acceptance:** `node tools/transcribe.mjs compound-interest` writes a
-`captions.json` whose words line up audibly with the VO when previewed via
-`CaptionTrack`.
+**Acceptance:** transcribing the example VO writes a `captions.json` whose words
+visibly track the audio in `CaptionTrack`.
 
-**Decision needed:** adopt `@remotion/captions`' `Caption` type in
-`src/lib/captions.ts` (a tidy alignment, but touches `src/` → would fold a small
-engine change into this stage), or keep our local subset type (zero `src/`
-change). Leaning **keep local subset** to keep this stage tools-only.
+**Decision:** keep the local `CaptionWord` subset type (tools-only stage) rather
+than adopting `@remotion/captions`' richer `Caption` (which would touch `src/`).
 
 ---
 
 ## Stage 3 — Script → auto-draft  → `0.4.0`
 
-**Outcome:** `tools/auto-draft.mjs <slug>` reads `scripts/<slug>.md` +
-`videos/<slug>/captions.json` and emits `videos/<slug>/props.json`.
+**Outcome:** `tools/auto-draft.mjs <channel> <slug>` reads `script.md` +
+`captions.json` and emits `props.json`.
 
-**Parse the script** (`scripts/sample-topic.md` is the template):
-- Each `## Heading (kind)` → one section; `kind` is read from the parenthetical
-  (`title` | `bars` | `text`).
-- Body text under the heading = the spoken words for that section.
-- `[VISUAL: ...]` note → scene specifics (title text, bar data, etc.).
+**Parse the script** (`script.md`): each `## Heading (kind)` → a section
+(`kind` from the parenthetical: `title` | `bars` | `text`); body text = spoken
+words; `[VISUAL: ...]` → scene specifics.
 
-**The hard part — align script sections to the transcript** so each section's
-`durationInFrames` is *derived from the voice*:
-1. Normalize both streams (lowercase, strip punctuation, expand obvious
-   number-words if cheap).
-2. Walk a monotonic pointer through the caption words, consuming the words of
-   each section in order. Section `start = firstWord.startMs`,
-   `end = lastWord.endMs`.
-3. Make sections contiguous (`section[i].end = section[i+1].start`) so scenes
-   tile the whole VO with no gaps.
+**The hard part — align sections to the transcript** so durations derive from the
+voice:
+1. Normalize both streams (lowercase, strip punctuation, expand cheap number-words).
+2. Walk a monotonic pointer through caption words, consuming each section's words
+   in order. `start = firstWord.startMs`, `end = lastWord.endMs`.
+3. Make sections contiguous (`section[i].end = section[i+1].start`) so scenes tile
+   the whole VO.
 4. `durationInFrames = round((end - start) / 1000 * fps)`.
 
-**Fallback (must have):** if alignment confidence is low for a section
-(transcript drifted from script — disfluencies, "8%" vs "eight percent"), fall
-back to a proportional split by word count and **flag that section in a printed
-report** for manual polish in Studio. Never silently emit bad timings.
+**Fallback (required):** if a section's alignment confidence is low (transcript
+drifted — disfluencies, "8%" vs "eight percent"), fall back to a proportional
+split by word count and **print a report flagging that section** for manual
+polish. Never silently emit bad timings.
 
-**Bar data:** parse numbers from the `[VISUAL: bar chart — 1000 / 1469 / ...]`
-note for a first draft; leave a clear placeholder + flag when unparseable.
+**Bar data:** parse numbers from `[VISUAL: bar chart — 1000 / 1469 / ...]` for a
+first draft; placeholder + flag when unparseable.
 
-**Acceptance:** running auto-draft on the compound-interest slug yields a
-`props.json` that renders end-to-end, with section cuts that land on the
-narration's section boundaries (±~0.3s).
+**Acceptance:** auto-drafting the example yields a `props.json` that renders
+end-to-end with section cuts landing on narration boundaries (±~0.3s).
 
 ---
 
-## Open decisions (resolve as we build, not now)
+## Open decisions (resolve while building)
 
-1. **VO-derived duration in Stage 1 vs Stage 2** — fold `parseMedia` duration
-   into 0.2.0 (recommended, it's the engine change that justifies the bump) or
-   defer to when a real VO first exists.
-2. **`@remotion/captions` adoption** — see Stage 2 decision.
-3. **Number-word normalization depth** — how hard to try on alignment before
-   falling back. Start shallow; improve only if real scripts demand it.
+1. **Where the owner's real channel is version-controlled** — tracked here while
+   private vs separate private content repo (see "Keeping content private").
+2. **Number-word normalization depth** in Stage 3 — start shallow, deepen only if
+   real scripts demand it.
 
 ## Out of scope (tracked separately on the roadmap)
 
-End-to-end auto mode, YouTube upload + thumbnail, the template library, Shorts
-variant, and brand font. This doc is only the voice-driven core.
+End-to-end auto mode, YouTube upload + thumbnail, the template-library, Shorts
+variant, brand font, and turning the repo into a GitHub *template repository* for
+public sharing (near-zero effort when the time comes, given this foundation).
