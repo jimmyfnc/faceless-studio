@@ -7,11 +7,15 @@ Effort: 🟢 small · 🟡 medium · 🔴 large · ⚫ epic
 
 ## Pipeline
 
+The three 🟡 items below are sequenced as one dependency chain in
+[brainstorms/voice-driven-pipeline.md](brainstorms/voice-driven-pipeline.md)
+(build order: per-video loading → Whisper → auto-draft).
+
 | Idea | Effort | Notes |
 |---|---|---|
-| Whisper transcription step | 🟡 | `@remotion/install-whisper-cpp` → word timestamps → captions JSON; makes "voice drives timeline" real (see skill `subtitles.md`) |
-| Script → auto-draft generator | 🟡 | parse `scripts/<slug>.md` sections + captions → emit per-video props |
-| Per-video content loading | 🟡 | `videos/<slug>/props.json` loaded via input props so making a video doesn't touch the `src/` engine (and doesn't bump the version) |
+| Per-video content loading | 🟡 | **Stage 1 → 0.2.0.** `videos/<slug>/props.json` rendered via `--props` so making a video doesn't touch the `src/` engine; `calculateMetadata` derives duration from the VO. See brainstorm. |
+| Whisper transcription step | 🟡 | **Stage 2 → 0.3.0.** `@remotion/install-whisper-cpp` → word timestamps → `captions.json`; makes "voice drives timeline" real. See brainstorm. |
+| Script → auto-draft generator | 🟡 | **Stage 3 → 0.4.0.** parse `scripts/<slug>.md` sections + align to captions → emit `props.json`. See brainstorm. |
 | Vertical Shorts variant | 🟢 | second `<Composition>` reusing `ExplainerVideo` at 1080×1920 |
 | Brand font | 🟢 | swap system font for a real one via `@remotion/google-fonts` |
 | End-to-end auto mode | 🔴 | topic → script → ElevenLabs scratch VO → draft → render, one command |
