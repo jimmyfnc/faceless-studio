@@ -7,14 +7,13 @@ Effort: 🟢 small · 🟡 medium · 🔴 large · ⚫ epic
 
 ## Pipeline
 
-The 🟡 items below are sequenced as one dependency chain in
-[brainstorms/voice-driven-pipeline.md](brainstorms/voice-driven-pipeline.md).
-**Stage 1 (multi-channel foundation) shipped in `0.2.0`; Stage 2 (Whisper
-transcription) shipped in `0.3.0`.** Remaining: auto-draft.
+The voice-driven pipeline (Stages 1–3: multi-channel foundation → Whisper →
+auto-draft) shipped across `0.2.0`–`0.4.0`; its plan is archived at
+[archive/voice-driven-pipeline.md](archive/voice-driven-pipeline.md). The core
+loop now works: script → record → transcribe → auto-draft → polish → render.
 
 | Idea | Effort | Notes |
 |---|---|---|
-| Script → auto-draft generator | 🟡 | **Stage 3 → 0.4.0.** parse `script.md` sections + align to `captions.json` → emit `props.json` (durations derived from caption timings). See brainstorm. |
 | Vertical Shorts variant | 🟢 | second `<Composition>` reusing `ExplainerVideo` at 1080×1920 |
 | Brand font | 🟢 | swap system font for a real one via `@remotion/google-fonts` |
 | Research & asset sourcing | 🔴 | **TODO (deferred).** Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + source URLs). Copyright-safe media: **AI-gen (ComfyUI) first**, then CC0/public-domain + permissive stock (Pexels/Pixabay) behind a license filter, capturing per-asset provenance + attribution to `credits.json`. Avoid CC-NC/ND and any music. Front half of "End-to-end auto mode". |

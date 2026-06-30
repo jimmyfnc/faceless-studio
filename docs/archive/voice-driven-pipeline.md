@@ -1,5 +1,8 @@
 # Brainstorm: the voice-driven, multi-channel pipeline
 
+> **Shipped** across `0.2.0`–`0.4.0` (Stage 1 multi-channel foundation, Stage 2
+> Whisper transcription, Stage 3 auto-draft). Archived for reference.
+
 **Two goals, one plan:**
 
 1. **Reusable, not personal** — anyone who pulls the repo gets a code-driven

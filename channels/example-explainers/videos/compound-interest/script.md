@@ -1,25 +1,29 @@
 # Script: How Compound Interest Works
 
-> Template for an explainer script. One `##` section = one scene.
-> Inline `[VISUAL: ...]` notes tell the auto-draft step what to generate.
-> Write in spoken language — you'll read this aloud for the voiceover.
+> One `## Label (kind)` = one scene; `kind` is `title`, `bars`, or `text`.
+> Write the spoken lines (you'll read these aloud), then a `[VISUAL: ...]` note
+> that auto-draft turns into the scene's on-screen content:
+>   title — "Main title" | "Optional subtitle"
+>   text  — "Heading" | "Optional body"
+>   bars  — "Heading"; Label=Value, Label=Value, …
+> Section durations come from the voice (caption timings), not these notes.
 
 ## Hook (title)
 
 What if doing nothing was the smartest money move you could make?
-[VISUAL: title card — "How Compound Interest Works"]
+[VISUAL: title — "How Compound Interest Works" | "A 60-second explainer"]
 
 ## The setup (bars)
 
 Say you invest a thousand dollars and earn eight percent a year.
 After five years it's about fifteen hundred. After thirty? Over ten thousand.
-[VISUAL: bar chart — 1000 / 1469 / 2159 / 4661 / 10063 across years 0,5,10,20,30]
+[VISUAL: bars — "$1,000 invested at 8% / year"; Year 0=1000, Year 5=1469, Year 10=2159, Year 20=4661, Year 30=10063]
 
 ## The payoff (text)
 
 The lesson isn't timing the market. It's time *in* the market.
 Start early, and the curve does the work for you.
-[VISUAL: text — "Time beats timing."]
+[VISUAL: text — "Time beats timing." | "Start early — the curve does the work."]
 
 ---
 

@@ -1,14 +1,15 @@
 {
+  "voiceoverSrc": "assets/example-explainers/compound-interest/vo.mp3",
   "sections": [
     {
       "kind": "title",
-      "durationInFrames": 140,
+      "durationInFrames": 108,
       "text": "How Compound Interest Works",
       "subtitle": "A 60-second explainer"
     },
     {
       "kind": "bars",
-      "durationInFrames": 233,
+      "durationInFrames": 274,
       "heading": "$1,000 invested at 8% / year",
       "data": [
         {
@@ -35,7 +36,7 @@
     },
     {
       "kind": "text",
-      "durationInFrames": 186,
+      "durationInFrames": 178,
       "heading": "Time beats timing.",
       "body": "Start early — the curve does the work."
     }
@@ -301,6 +302,5 @@
       "startMs": 18570,
       "endMs": 19240
     }
-  ],
-  "voiceoverSrc": "assets/example-explainers/compound-interest/vo.mp3"
+  ]
 }

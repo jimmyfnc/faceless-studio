@@ -96,9 +96,26 @@ Remotion's bundled ffmpeg (no system ffmpeg needed), runs `@remotion/install-whi
 `whisper.cpp/`), and writes word-level `captions.json` (`{ text, startMs, endMs }[]`).
 Sub-word tokens (`$`, `1`, `,`, `000`) are merged into whole words.
 
-Then drop the words into the video's `props.json` `captions` (Stage 3 auto-draft
-will do this and align section durations to the words; for now copy them in).
-With a `voiceoverSrc` set, the video's total duration matches the VO automatically.
+### Auto-draft
+
+```bash
+npm run draft -- <channel> <slug>
+npm run draft -- example-explainers compound-interest
+```
+
+Reads `script.md` + `captions.json` and writes `props.json`: each
+`## Label (kind)` becomes a scene, its `[VISUAL]` note becomes the scene content
+(`title — "Main" | "Sub"`, `text — "Heading" | "Body"`,
+`bars — "Heading"; Label=Value, …`), and — the key part — each section's
+**duration is derived from the voice** by aligning its narration to the caption
+words. Total length comes from the VO. It prints a report and flags any section
+whose narration didn't align well, so you know what to check. **It overwrites
+`props.json`** — then polish the draft in Studio:
+
+```bash
+npm run studio -- <channel> <slug>
+npm run render -- <channel> <slug>
+```
 
 ## ComfyUI visuals
 

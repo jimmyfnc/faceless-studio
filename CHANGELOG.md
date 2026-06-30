@@ -4,6 +4,28 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.4.0] — 2026-06-30
+
+Auto-draft — the voice now drives the timeline automatically. This completes the
+core pipeline: script → record → transcribe → auto-draft → polish → render.
+
+### Added
+- **`npm run draft -- <channel> <slug>`** turns a `script.md` + `captions.json`
+  into a `props.json`. Each `## Label (kind)` becomes a scene and its `[VISUAL]`
+  note becomes the on-screen content (`title — "Main" | "Sub"`,
+  `text — "Heading" | "Body"`, `bars — "Heading"; Label=Value, …`). The key
+  part: each section's **duration is derived from the voice** by aligning its
+  narration to the caption words (tolerant of number-word vs numeral
+  differences). Total length comes from the voiceover.
+- It prints a report and flags low-confidence sections so you know what to
+  polish. The logic is a pure, testable module (`tools/lib/autodraft.mjs`) the
+  future web app can reuse.
+
+### Changed
+- The example script's `[VISUAL]` notes use the new structured format, and the
+  example `props.json` is now produced by auto-draft (durations aligned to the
+  scratch voiceover).
+
 ## [0.3.0] — 2026-06-30
 
 Whisper transcription — your voice can now drive the timeline.
