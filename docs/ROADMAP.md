@@ -17,7 +17,8 @@ transcription) shipped in `0.3.0`.** Remaining: auto-draft.
 | Script → auto-draft generator | 🟡 | **Stage 3 → 0.4.0.** parse `script.md` sections + align to `captions.json` → emit `props.json` (durations derived from caption timings). See brainstorm. |
 | Vertical Shorts variant | 🟢 | second `<Composition>` reusing `ExplainerVideo` at 1080×1920 |
 | Brand font | 🟢 | swap system font for a real one via `@remotion/google-fonts` |
-| End-to-end auto mode | 🔴 | topic → script → ElevenLabs scratch VO → draft → render, one command |
+| Research & asset sourcing | 🔴 | **TODO (deferred).** Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + source URLs). Copyright-safe media: **AI-gen (ComfyUI) first**, then CC0/public-domain + permissive stock (Pexels/Pixabay) behind a license filter, capturing per-asset provenance + attribution to `credits.json`. Avoid CC-NC/ND and any music. Front half of "End-to-end auto mode". |
+| End-to-end auto mode | 🔴 | topic → script → ElevenLabs scratch VO → draft → render, one command (builds on Research + auto-draft) |
 | YouTube upload + thumbnail | 🔴 | rclone backup + YouTube API; thumbnail via Nano Banana |
 | Template library | ⚫ | listicle / cinematic templates beyond explainer |
 
