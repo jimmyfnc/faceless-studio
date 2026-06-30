@@ -4,6 +4,15 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.9.1] — 2026-06-30
+
+### Changed
+- **Captions are now easier to read.** Instead of sliding word-by-word, they
+  show one **phrase block at a time** — the block holds still while it's spoken
+  (active word highlighted in the accent), then the next block takes over. Blocks
+  break at sentence punctuation or every ~6 words (`chunkCaptions`; tune via
+  `CaptionTrack`'s `maxWords`). Applies to every video.
+
 ## [0.9.0] — 2026-06-30
 
 Short cuts — one source now yields a long-form video *and* a vertical short for

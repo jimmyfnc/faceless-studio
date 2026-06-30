@@ -1,61 +1,62 @@
+import { useMemo } from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { useBrand } from "../theme/BrandProvider";
-import type { CaptionWord } from "../lib/captions";
+import { chunkCaptions, type CaptionWord } from "../lib/captions";
 
 /**
- * Word-synced caption overlay. Maps the current frame to milliseconds and
- * highlights the active word, showing a small window of context around it.
+ * Word-synced captions, shown one **phrase block at a time**. Each block holds
+ * still while its words are spoken (the active word highlights in the accent),
+ * then the next block takes over — far easier to read than text that slides on
+ * every word.
  *
- * In the real pipeline, `words` comes straight from Whisper transcription of
- * your voiceover, so captions and narration are always perfectly aligned.
+ * `words` comes straight from Whisper transcription of your voiceover, so the
+ * captions stay aligned to the narration.
  */
 export const CaptionTrack: React.FC<{
   words: CaptionWord[];
-  /** Words shown on screen around the active word. */
-  windowSize?: number;
-}> = ({ words, windowSize = 9 }) => {
+  /** Max words per block before it breaks (sentences break earlier). */
+  maxWords?: number;
+}> = ({ words, maxWords = 6 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const brand = useBrand();
   const ms = (frame / fps) * 1000;
 
-  const activeIdx = words.findIndex((w) => ms >= w.startMs && ms < w.endMs);
-  if (activeIdx === -1) return null;
+  const blocks = useMemo(() => chunkCaptions(words, maxWords), [words, maxWords]);
+  if (!blocks.length || ms < blocks[0].startMs) return null;
 
-  const lead = Math.floor((windowSize - 1) / 2);
-  const start = Math.max(0, activeIdx - lead);
-  const visible = words.slice(start, start + windowSize);
+  // Current block = the last one that has started; it stays up until the next
+  // begins, so the text holds still.
+  let bi = 0;
+  for (let i = 0; i < blocks.length; i++) {
+    if (blocks[i].startMs <= ms) bi = i;
+    else break;
+  }
+  const block = blocks[bi];
+  // Don't let the final block linger over the outro.
+  if (bi === blocks.length - 1 && ms > block.endMs + 800) return null;
 
   return (
     <AbsoluteFill
-      style={{
-        justifyContent: "flex-end",
-        alignItems: "center",
-        paddingBottom: 140,
-      }}
+      style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 140 }}
     >
       <div
         style={{
-          maxWidth: 1400,
+          maxWidth: 1500,
           textAlign: "center",
           fontFamily: brand.fonts.body,
           fontSize: 56,
           fontWeight: 800,
-          lineHeight: 1.3,
+          lineHeight: 1.35,
           textShadow: "0 4px 24px rgba(0,0,0,0.6)",
         }}
       >
-        {visible.map((w, i) => {
-          const isActive = start + i === activeIdx;
+        {block.words.map((w, i) => {
+          const isActive = ms >= w.startMs && ms < w.endMs;
           return (
             <span
               key={`${w.startMs}-${i}`}
-              style={{
-                color: isActive ? brand.colors.accent : brand.colors.text,
-                display: "inline-block",
-                margin: "0 8px",
-                transform: isActive ? "scale(1.08)" : "scale(1)",
-              }}
+              style={{ color: isActive ? brand.colors.accent : brand.colors.text, margin: "0 8px" }}
             >
               {w.text}
             </span>
