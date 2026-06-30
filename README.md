@@ -72,6 +72,7 @@ are opt-in pieces of the production pipeline.
 npm run dev                                # Studio on the engine sample
 npm run studio -- <channel> <slug>         # Studio on a specific channel video
 npm run render -- <channel> <slug> [out]   # render a channel video to out/
+npm run short -- <channel> <slug> [secs]   # vertical 9:16 short cut → out/...-short.mp4
 npm run transcribe -- <channel> <slug>     # voiceover → captions.json (Whisper)
 npm run research -- plan <channel> "<topic>"   # idea → single video or series; brief/script too (BYO LLM)
 npm run draft -- <channel> <slug>          # script.md + captions → props.json (voice-aligned)

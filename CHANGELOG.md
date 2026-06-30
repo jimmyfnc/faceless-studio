@@ -4,6 +4,26 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.9.0] — 2026-06-30
+
+Short cuts — one source now yields a long-form video *and* a vertical short for
+Shorts / Reels / TikTok.
+
+### Added
+- **`npm run short -- <channel> <slug> [seconds]`** (default `30`) trims the
+  long-form to a leading window (the hook/teaser), keeps the voiceover + captions
+  for that window, and renders a new **`ExplainerShort`** composition at 1080×1920
+  → `out/<channel>-<slug>-short.mp4`.
+- The trim logic (`tools/lib/short.mjs`) is pure and tested: whole scenes are kept
+  while they fit and the boundary scene is truncated to land on the exact length;
+  a video shorter than the target is returned whole.
+- The bar-chart scene is now **portrait-aware** — it centers vertically in 9:16
+  instead of leaving a big empty top or crowding the captions.
+
+### Changed
+- `seconds` is a positional arg (not `--seconds`) because npm doesn't forward a
+  second `--flag` to scripts.
+
 ## [0.8.0] — 2026-06-30
 
 Research brief → script — the front of the funnel is complete: an idea becomes a

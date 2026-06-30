@@ -153,6 +153,16 @@ export const calculateExplainerMetadata: CalculateMetadataFunction<
   return { durationInFrames };
 };
 
+/**
+ * Metadata for short cuts: duration is purely the sum of (already-trimmed)
+ * sections — the `short` tool pre-trims to a leading window, and the voiceover
+ * just plays from 0 to that length.
+ */
+export const calculateShortMetadata: CalculateMetadataFunction<ExplainerProps> = ({ props }) => {
+  const total = props.sections.reduce((sum, s) => sum + s.durationInFrames, 0);
+  return { durationInFrames: Math.max(total, 1) };
+};
+
 export const ExplainerVideo: React.FC<ExplainerProps> = ({
   brand,
   voiceoverSrc,

@@ -16,13 +16,21 @@ export const BarChartScene: React.FC<{
   data: BarDatum[];
 }> = ({ heading, data }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width, height } = useVideoConfig();
   const brand = useBrand();
   const max = Math.max(...data.map((d) => d.value), 1);
+  // Portrait (Shorts): center the chart vertically instead of bottom-aligning,
+  // so it doesn't leave a huge empty top or crowd the captions.
+  const portrait = height > width;
 
   return (
     <AbsoluteFill
-      style={{ padding: 100, fontFamily: brand.fonts.heading, justifyContent: "flex-end" }}
+      style={{
+        padding: portrait ? 72 : 100,
+        paddingBottom: portrait ? 280 : 100,
+        fontFamily: brand.fonts.heading,
+        justifyContent: portrait ? "center" : "flex-end",
+      }}
     >
       <h1
         style={{

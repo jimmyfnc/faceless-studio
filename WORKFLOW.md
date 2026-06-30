@@ -238,10 +238,13 @@ git-ignored (keep yours private or in a separate content repo).
 
 ## Rendering & Shorts
 
-- `npm run render -- <channel> <slug>` (uses Remotion's bundled ffmpeg — no
-  system ffmpeg needed). Duration matches the voiceover when one is set.
-- **Vertical Shorts:** add a second `<Composition>` reusing `ExplainerVideo`
-  with `width={1080} height={1920}`, or override dimensions in `calculateMetadata`.
+- **Long-form:** `npm run render -- <channel> <slug>` (uses Remotion's bundled
+  ffmpeg — no system ffmpeg needed). Duration matches the voiceover when one is set.
+- **Vertical short cut:** `npm run short -- <channel> <slug> [seconds]` (default
+  `30`). Trims the long-form to a leading window (the hook/teaser), keeps the VO +
+  captions for that window, and renders the `ExplainerShort` composition
+  (1080×1920) → `out/<channel>-<slug>-short.mp4`. One source → long-form + Shorts /
+  Reels / TikTok. (`seconds` is positional — npm doesn't forward `--flags`.)
 
 ## Structure
 

@@ -13,34 +13,32 @@ Effort: 🟢 small · 🟡 medium · 🔴 large · ⚫ epic
 > automated as far as possible — and **original by construction** so it holds up on
 > YouTube / Shorts / TikTok / Reels.
 
-What works today (`0.6.0`): script → record → transcribe → auto-draft → render
-long-form, with **image + video scenes** and **copyright-safe asset sourcing**
-(Openverse fetch + license filter + `credits.json`; ComfyUI/own via `--own`). The
-gaps to the north star, in build order:
+The full funnel runs today (`0.9.0`): idea → **research** (plan + brief → script,
+bring-your-own LLM/search) → script → record VO → transcribe → auto-draft →
+**assets** (license-safe fetch + own/AI-gen) → render **long-form + vertical short**.
 
-1. ~~**Visuals** — image/video scenes~~ ✅ `0.5.0`.
-2. ~~**Assets** — licensed/PD fetch + provenance~~ ✅ `0.6.0` (more providers + ComfyUI wiring can follow).
-3. ~~**Front of funnel** — research (plan + brief → script, BYO LLM + search)~~ ✅ `0.7.0`–`0.8.0`.
-4. **Multi-format** — short cuts for vertical platforms (recommended next).
-5. **Ends** — originality/licensing safeguards, then publish + automation.
+| ✅ Shipped | Version |
+|---|---|
+| Voice pipeline (transcribe → auto-draft → render) | `0.2.0`–`0.4.0` |
+| Image + video scenes | `0.5.0` |
+| Copyright-safe asset sourcing | `0.6.0` |
+| Research (plan + brief → script, BYO LLM/search) | `0.7.0`–`0.8.0` |
+| Vertical short cuts | `0.9.0` |
 
-The full funnel now runs: idea → **research** → script → record → transcribe →
-auto-draft → **assets** → render. What's left is multi-format output, safeguards,
-and publish/automation.
+What's left toward the north star: originality/licensing safeguards, then publish
++ automation.
 
 ## Pipeline (ranked toward the north star)
 
 | Idea | Effort | Notes |
 |---|---|---|
-| Short cuts (Shorts/Reels/TikTok) | 🟡 | **Recommended next.** A 1080×1920 composition reusing `ExplainerVideo`, plus auto-selecting highlight segment(s) from the long-form → render vertical cuts. One source → long-form + shorts. |
-| More asset providers + ComfyUI wiring | 🟡 | Add NASA / Wikimedia / Pexels (key) providers behind the same license filter; run `comfyui-generate.mjs` from the pipeline and auto-register output via `--own`. Builds on the `0.6.0` asset core. |
-| Research → script | 🔴 | Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel. |
-| Short cuts (Shorts/Reels/TikTok) | 🟡 | 9:16 composition reusing `ExplainerVideo`, plus auto-selecting highlight segments from the long-form → render vertical cuts per platform. |
-| Originality & platform-safety | 🟡 | Provenance/`credits.json`, original script + VO + visuals, no unlicensed music; a pre-publish checklist so videos hold up against Content-ID + "reused content" policies. (Risk reduction, not a guarantee.) |
-| Brand font | 🟢 | let `brand.json` name a Google font; load via `@remotion/google-fonts` (extends brand-as-data) |
-| End-to-end auto mode | 🔴 | topic → research → script → scratch VO → assets → draft → render, one command (composes the rows above) |
-| YouTube upload + thumbnail | 🔴 | rclone backup + YouTube API + multi-platform; thumbnail via Nano Banana |
-| Template library | ⚫ | listicle / cinematic templates beyond explainer |
+| Originality & platform-safety | 🟡 | **Recommended next.** A pre-publish check + report: confirm every asset is in `credits.json` and license-safe, the script/VO/visuals are original, no unlicensed music, and surface the attribution block for the description. Risk reduction, not a guarantee. |
+| Smarter short-cut selection | 🟢 | Beyond the leading window: pick the punchiest segment (hook + payoff, or LLM-chosen), and per-scene portrait polish. Builds on `0.9.0`. |
+| More asset providers + ComfyUI wiring | 🟡 | NASA / Wikimedia / Pexels (key) providers behind the same license filter; run `comfyui-generate.mjs` from the pipeline and auto-register output via `--own`. |
+| Brand font | 🟢 | let `brand.json` name a Google font; load via `@remotion/google-fonts` (extends brand-as-data). |
+| Publish (YouTube + multi-platform) | 🔴 | rclone backup + YouTube API + Shorts/TikTok/Reels; thumbnail via Nano Banana. |
+| End-to-end auto mode | 🔴 | topic → research → script → scratch VO → assets → draft → render long-form + short, one command (composes the rows above). |
+| Template library | ⚫ | listicle / cinematic templates beyond explainer. |
 
 ## App / UI
 
