@@ -104,13 +104,32 @@ npm run draft -- example-explainers compound-interest
 ```
 
 Reads `script.md` + `captions.json` and writes `props.json`: each
-`## Label (kind)` becomes a scene, its `[VISUAL]` note becomes the scene content
-(`title — "Main" | "Sub"`, `text — "Heading" | "Body"`,
-`bars — "Heading"; Label=Value, …`), and — the key part — each section's
-**duration is derived from the voice** by aligning its narration to the caption
-words. Total length comes from the VO. It prints a report and flags any section
-whose narration didn't align well, so you know what to check. **It overwrites
-`props.json`** — then polish the draft in Studio:
+`## Label (kind)` becomes a scene, its `[VISUAL]` note becomes the scene content,
+and — the key part — each section's **duration is derived from the voice** by
+aligning its narration to the caption words. Total length comes from the VO. It
+prints a report and flags any section whose narration didn't align well, so you
+know what to check. **It overwrites `props.json`** — then polish the draft in
+Studio:
+
+Scene kinds and their `[VISUAL]` formats:
+
+| kind | `[VISUAL]` | renders |
+|---|---|---|
+| `title` | `title — "Main" \| "Subtitle"` | animated title card |
+| `text` | `text — "Heading" \| "Body"` | heading + supporting line |
+| `bars` | `bars — "Heading"; Label=Value, …` | animated bar chart |
+| `image` | `image — "assets/<ch>/<slug>/x.jpg" \| "Photo — NASA"` | full-frame photo, Ken Burns, corner caption |
+| `video` | `video — "assets/<ch>/<slug>/clip.mp4" \| "B-roll — Pexels"` | full-frame b-roll (muted) |
+
+The `image`/`video` caption doubles as an **attribution label** — put the source
++ license there.
+
+**Bring your own media:** drop images/clips into
+`public/assets/<channel>/<slug>/` and reference them by their `assets/…` path
+(heavy `*.mp4/.wav` are gitignored; `*.png/.jpg` are committed). An `image`/`video`
+`src` may also be an `https://` URL. Generate visuals with ComfyUI (below) or the
+`gemini-imagegen` / `nano-banana-2` skills, fetch public-domain/licensed media, or
+shoot your own — all land in the same folder.
 
 ```bash
 npm run studio -- <channel> <slug>

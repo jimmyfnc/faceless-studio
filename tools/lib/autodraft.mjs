@@ -10,7 +10,7 @@
  * future web app call these. All four exports are unit-tested.
  */
 
-const KINDS = ["title", "bars", "text"];
+const KINDS = ["title", "bars", "text", "image", "video"];
 
 /* ── Script parsing ──────────────────────────────────────────────────────── */
 
@@ -100,6 +100,11 @@ export function sceneContent(section) {
     if (!heading) flags.push(`bars "${section.label}": no heading in [VISUAL]`);
     if (!data.length) flags.push(`bars "${section.label}": no data parsed from [VISUAL]`);
     return { fields: { heading: heading || section.label, data }, flags };
+  }
+  if (section.kind === "image" || section.kind === "video") {
+    const [src, caption] = splitPipe(payload);
+    if (!src) flags.push(`${section.kind} "${section.label}": no src in [VISUAL]`);
+    return { fields: { src: src || "", caption: caption || undefined }, flags };
   }
   return { fields: {}, flags: [`unknown kind "${section.kind}"`] };
 }

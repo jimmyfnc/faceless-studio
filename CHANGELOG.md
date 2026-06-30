@@ -4,6 +4,30 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.5.0] — 2026-06-30
+
+Images and video — the engine can now show photos and b-roll, not just
+code-drawn scenes. This unblocks public-domain/licensed media, AI-generated
+visuals, and your own clips.
+
+### Added
+- **`image` scene** — a full-frame photo with a slow Ken Burns push-in and
+  `cover`/`contain` fit. Use for public-domain/licensed photos, AI-generated
+  stills, or your own images.
+- **`video` scene** — full-frame b-roll via `<OffthreadVideo>`, muted by default
+  (your voiceover stays the audio).
+- Both take an optional **caption that doubles as an attribution label** (e.g.
+  "Photo — NASA / public domain") shown in the corner.
+- **Bring your own media:** an `image`/`video` `src` is a path under
+  `public/assets/<channel>/<slug>/` or an `https://` URL. Drop files in and
+  reference them.
+- Auto-draft understands `image` / `video` sections:
+  `[VISUAL: image — "assets/…/x.jpg" | "Photo — NASA"]`.
+
+### Changed
+- The section-rendering switch in `ExplainerVideo` is now exhaustive over all
+  five scene kinds.
+
 ## [0.4.0] — 2026-06-30
 
 Auto-draft — the voice now drives the timeline automatically. This completes the

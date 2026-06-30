@@ -13,12 +13,13 @@ Effort: 🟢 small · 🟡 medium · 🔴 large · ⚫ epic
 > automated as far as possible — and **original by construction** so it holds up on
 > YouTube / Shorts / TikTok / Reels.
 
-What works today (`0.4.0`) is the middle: script → record → transcribe →
-auto-draft → render long-form. The gaps to the north star, in build order:
+What works today (`0.5.0`): the middle + visuals — script → record → transcribe →
+auto-draft → render long-form, with **image + video scenes** (photos, b-roll,
+your own media). The gaps to the north star, in build order:
 
-1. **Visuals** — the engine can't show images or video yet (the keystone gap).
-2. **Front of funnel** — research → script.
-3. **Assets** — gather (licensed/PD) + generate (AI) + bring your own.
+1. ~~**Visuals** — image/video scenes~~ ✅ shipped in `0.5.0`.
+2. **Assets** — gather (licensed/PD) + generate (AI), now that scenes can show them.
+3. **Front of funnel** — research → script.
 4. **Multi-format** — short cuts for vertical platforms.
 5. **Ends** — originality/licensing safeguards, then publish + automation.
 
@@ -26,9 +27,7 @@ auto-draft → render long-form. The gaps to the north star, in build order:
 
 | Idea | Effort | Notes |
 |---|---|---|
-| **Visual media scenes (image + video)** | 🟡 | **Recommended next.** Engine: `image`/`video` scene kinds (`<Img>` / `<OffthreadVideo>`) with fit + Ken Burns motion; auto-draft places them from `[VISUAL: image …]` / `[VISUAL: video …]`. **Prerequisite for using any photo, b-roll, or AI image** — unblocks the whole visual half of the vision. |
-| Bring-your-own media | 🟢 | Drop images/clips into `public/assets/<channel>/<slug>/` and reference them from a scene's `[VISUAL]`. Pairs with visual media scenes. |
-| Asset sourcing & generation | 🔴 | **AI-gen (ComfyUI) first** (we have `comfyui-generate.mjs`), then CC0/public-domain + permissive stock (NASA, Wikimedia, Openverse, Pexels) behind a license filter; per-asset provenance + attribution → `credits.json`. Avoid CC-NC/ND and any music. |
+| Asset sourcing & generation | 🔴 | **Recommended next.** Now that `image`/`video` scenes exist (`0.5.0`): **AI-gen (ComfyUI) first** (we have `comfyui-generate.mjs`), then CC0/public-domain + permissive stock (NASA, Wikimedia, Openverse, Pexels) behind a license filter; per-asset provenance + attribution → `credits.json` (the scene `caption` shows it). Avoid CC-NC/ND and any music. |
 | Research → script | 🔴 | Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel. |
 | Short cuts (Shorts/Reels/TikTok) | 🟡 | 9:16 composition reusing `ExplainerVideo`, plus auto-selecting highlight segments from the long-form → render vertical cuts per platform. |
 | Originality & platform-safety | 🟡 | Provenance/`credits.json`, original script + VO + visuals, no unlicensed music; a pre-publish checklist so videos hold up against Content-ID + "reused content" policies. (Risk reduction, not a guarantee.) |

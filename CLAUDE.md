@@ -4,7 +4,7 @@ Code-driven **faceless explainer videos** with Remotion. The creator's recorded
 voice drives the timeline; charts/diagrams/b-roll sync to the narration. Full
 production pipeline and commands live in [WORKFLOW.md](WORKFLOW.md).
 
-**Current version: 0.4.0** (pre-launch; bumps to `1.0.0` when the channel ships
+**Current version: 0.5.0** (pre-launch; bumps to `1.0.0` when the channel ships
 its first real video).
 
 ## What this project is

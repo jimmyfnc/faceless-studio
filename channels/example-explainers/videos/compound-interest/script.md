@@ -6,6 +6,8 @@
 >   title — "Main title" | "Optional subtitle"
 >   text  — "Heading" | "Optional body"
 >   bars  — "Heading"; Label=Value, Label=Value, …
+>   image — "assets/<ch>/<slug>/photo.jpg" | "Photo — NASA"   (caption = attribution)
+>   video — "assets/<ch>/<slug>/clip.mp4" | "B-roll — Pexels"
 > Section durations come from the voice (caption timings), not these notes.
 
 ## Hook (title)

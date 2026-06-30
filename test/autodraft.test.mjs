@@ -75,6 +75,25 @@ describe("sceneContent", () => {
     expect(fields.heading).toBe("The End");
     expect(fields.body).toBeUndefined();
   });
+
+  it("parses an image src + attribution caption (keeping an em dash in the caption)", () => {
+    const { fields } = sceneContent({
+      kind: "image",
+      label: "Mars",
+      visual: 'image — "assets/x/mars.jpg" | "Photo — NASA"',
+    });
+    expect(fields.src).toBe("assets/x/mars.jpg");
+    expect(fields.caption).toBe("Photo — NASA");
+  });
+
+  it("parses a video src and flags a missing src", () => {
+    const ok = sceneContent({ kind: "video", label: "B", visual: 'video — "assets/x/clip.mp4"' });
+    expect(ok.fields.src).toBe("assets/x/clip.mp4");
+    expect(ok.fields.caption).toBeUndefined();
+
+    const bad = sceneContent({ kind: "image", label: "X", visual: "image — " });
+    expect(bad.flags.join(" ")).toMatch(/no src/);
+  });
 });
 
 describe("alignSectionFrames", () => {

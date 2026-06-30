@@ -10,6 +10,8 @@ import { parseMedia } from "@remotion/media-parser";
 import { TitleCard } from "../scenes/TitleCard";
 import { TextScene } from "../scenes/TextScene";
 import { BarChartScene } from "../scenes/BarChartScene";
+import { ImageScene } from "../scenes/ImageScene";
+import { VideoScene } from "../scenes/VideoScene";
 import { CaptionTrack } from "../scenes/CaptionTrack";
 import { BrandProvider } from "../theme/BrandProvider";
 import { brandSchema, defaultBrand } from "../theme/tokens";
@@ -47,6 +49,24 @@ const sectionSchema = z.discriminatedUnion("kind", [
     heading: z.string(),
     body: z.string().optional(),
   }),
+  z.object({
+    kind: z.literal("image"),
+    durationInFrames: z.number(),
+    /** Path under public/ (e.g. "assets/<ch>/<slug>/mars.jpg") or an https URL. */
+    src: z.string(),
+    fit: z.enum(["cover", "contain"]).optional(),
+    kenBurns: z.boolean().optional(),
+    /** Corner label — handy for attribution ("Photo — NASA"). */
+    caption: z.string().optional(),
+  }),
+  z.object({
+    kind: z.literal("video"),
+    durationInFrames: z.number(),
+    src: z.string(),
+    fit: z.enum(["cover", "contain"]).optional(),
+    muted: z.boolean().optional(),
+    caption: z.string().optional(),
+  }),
 ]);
 
 export const explainerSchema = z.object({
@@ -69,6 +89,37 @@ export const explainerSchema = z.object({
 });
 
 export type ExplainerProps = z.infer<typeof explainerSchema>;
+type Section = ExplainerProps["sections"][number];
+
+const Scene: React.FC<{ section: Section }> = ({ section }) => {
+  switch (section.kind) {
+    case "title":
+      return <TitleCard title={section.text} subtitle={section.subtitle} />;
+    case "bars":
+      return <BarChartScene heading={section.heading} data={section.data} />;
+    case "text":
+      return <TextScene heading={section.heading} body={section.body} />;
+    case "image":
+      return (
+        <ImageScene
+          src={section.src}
+          fit={section.fit}
+          kenBurns={section.kenBurns}
+          caption={section.caption}
+          durationInFrames={section.durationInFrames}
+        />
+      );
+    case "video":
+      return (
+        <VideoScene
+          src={section.src}
+          fit={section.fit}
+          muted={section.muted}
+          caption={section.caption}
+        />
+      );
+  }
+};
 
 /**
  * Duration matches the voiceover when one is supplied (authoritative — the
@@ -123,13 +174,7 @@ export const ExplainerVideo: React.FC<ExplainerProps> = ({
         <Series>
           {sections.map((section, i) => (
             <Series.Sequence key={i} durationInFrames={section.durationInFrames}>
-              {section.kind === "title" ? (
-                <TitleCard title={section.text} subtitle={section.subtitle} />
-              ) : section.kind === "bars" ? (
-                <BarChartScene heading={section.heading} data={section.data} />
-              ) : (
-                <TextScene heading={section.heading} body={section.body} />
-              )}
+              <Scene section={section} />
             </Series.Sequence>
           ))}
         </Series>

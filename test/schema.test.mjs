@@ -47,9 +47,26 @@ describe("explainerSchema", () => {
   it("rejects an unknown section kind", () => {
     expect(() =>
       explainerSchema.parse({
-        sections: [{ kind: "video", durationInFrames: 10 }],
+        sections: [{ kind: "clip", durationInFrames: 10 }],
         captions: [],
       }),
+    ).toThrow();
+  });
+
+  it("accepts image and video sections", () => {
+    const props = {
+      sections: [
+        { kind: "image", durationInFrames: 90, src: "assets/x/mars.jpg", caption: "NASA" },
+        { kind: "video", durationInFrames: 60, src: "assets/x/clip.mp4", fit: "contain", muted: true },
+      ],
+      captions: [],
+    };
+    expect(() => explainerSchema.parse(props)).not.toThrow();
+  });
+
+  it("rejects an image section with no src", () => {
+    expect(() =>
+      explainerSchema.parse({ sections: [{ kind: "image", durationInFrames: 90 }], captions: [] }),
     ).toThrow();
   });
 });
