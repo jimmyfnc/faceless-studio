@@ -20,7 +20,7 @@ gaps to the north star, in build order:
 
 1. ~~**Visuals** — image/video scenes~~ ✅ `0.5.0`.
 2. ~~**Assets** — licensed/PD fetch + provenance~~ ✅ `0.6.0` (more providers + ComfyUI wiring can follow).
-3. **Front of funnel** — research → script (recommended next).
+3. **Front of funnel** — research: ✅ topic → single/series **plan** + BYO-LLM (`0.7.0`); **brief → script.md** is next.
 4. **Multi-format** — short cuts for vertical platforms.
 5. **Ends** — originality/licensing safeguards, then publish + automation.
 
@@ -28,7 +28,7 @@ gaps to the north star, in build order:
 
 | Idea | Effort | Notes |
 |---|---|---|
-| Research → script | 🔴 | **Recommended next.** Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel — start from an idea, not a blank script. |
+| Research: brief → script | 🟡 | **Recommended next.** Builds on the `0.7.0` plan + LLM seam: deep-research a chosen angle (web search → facts + sources) → `research.json` → `script.md` via the tested `briefToScript`. Add a pluggable **search** provider (agent `WebSearch` default; Brave/Tavily for headless) mirroring the LLM seam. |
 | More asset providers + ComfyUI wiring | 🟡 | Add NASA / Wikimedia / Pexels (key) providers behind the same license filter; run `comfyui-generate.mjs` from the pipeline and auto-register output via `--own`. Builds on the `0.6.0` asset core. |
 | Research → script | 🔴 | Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel. |
 | Short cuts (Shorts/Reels/TikTok) | 🟡 | 9:16 composition reusing `ExplainerVideo`, plus auto-selecting highlight segments from the long-form → render vertical cuts per platform. |

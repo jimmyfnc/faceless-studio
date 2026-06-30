@@ -71,6 +71,43 @@ React compositions plus a props editor and a render button.
   shows whatever that code renders. **Claude edits the code; you preview and
   fine-tune in Studio.** That division is the whole point of the hybrid flow.
 
+## Research → plan (front of the funnel)
+
+Start from an idea. Research narrows a topic to **one video** or breaks it into a
+**series**:
+
+```bash
+npm run research -- <channel> "<topic>" [--angles 5] [--episodes 6]
+npm run research -- example-explainers "the history of money"
+```
+
+Output `channels/<channel>/research/<topic>.plan.json`: a `single`-vs-`series`
+assessment, sharp single-video **angles**, and — if broad — an ordered **series**
+plan (each episode gets a slug like `the-history-of-money-02-the-first-coins`).
+Pick an angle → make one video; pick the series → make each episode a normal
+`videos/<slug>/` (a series is just ordered episode videos in the channel).
+Drafting the chosen angle into a `script.md` is the next step.
+
+### Bring your own LLM (no lock-in)
+
+Research needs an LLM — two ways to run it:
+
+- **Agent-driven (default, no token):** in Claude Code, Claude plans + researches.
+  With no LLM configured, `npm run research` prints the exact prompt to run.
+- **Bring your own LLM (headless):** any OpenAI-compatible endpoint — OpenAI,
+  OpenRouter, Groq, Together, Azure, and **local/free Ollama, LM Studio, vLLM**:
+
+```bash
+# OpenAI (or compatible)
+setx RESEARCH_LLM api
+setx RESEARCH_LLM_API_KEY "sk-..."                  # default model gpt-4o-mini
+# Local Ollama — free, no key
+setx RESEARCH_LLM_BASE_URL "http://localhost:11434/v1"
+setx RESEARCH_LLM_MODEL "llama3.1"
+```
+
+No one is forced onto Claude or a paid token; a free local model works.
+
 ## Recording your own voice
 
 1. Write/approve the script — `channels/<channel>/videos/<slug>/script.md`

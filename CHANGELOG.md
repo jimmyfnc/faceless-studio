@@ -4,6 +4,30 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.7.0] — 2026-06-30
+
+Research — start from an idea, and bring your own LLM. This is the front of the
+funnel: narrow a topic to one video or a series.
+
+### Added
+- **`npm run research -- <channel> "<topic>"`** plans a topic: a `single`-vs-`series`
+  assessment with a rationale, sharp single-video **angles**, and — when broad — an
+  ordered **series** plan (each episode gets a slug). Writes
+  `channels/<channel>/research/<topic>.plan.json`. A series is just ordered episode
+  videos in the channel, so the rest of the pipeline works per-episode unchanged.
+- **Pluggable LLM, no lock-in** (`tools/lib/llm.mjs`): agent-driven by default (no
+  token — Claude does it in Claude Code). For headless runs, **bring your own LLM**
+  via any OpenAI-compatible endpoint — OpenAI/OpenRouter/Groq/Together/Azure and
+  **local/free Ollama, LM Studio, vLLM** — by setting `RESEARCH_LLM_BASE_URL` +
+  `RESEARCH_LLM_MODEL` (+ key if needed). With no LLM configured, the command
+  prints the exact prompt to run.
+- Research helpers (`tools/lib/research.mjs`) are pure and tested, including
+  `briefToScript` which renders a research brief into a `script.md` that flows
+  straight into `npm run draft`.
+
+Next increment: the brief step (deep-research a chosen angle into facts + sources
+→ `script.md`).
+
 ## [0.6.0] — 2026-06-30
 
 Copyright-safe asset sourcing — gather real photos (and credit your own /

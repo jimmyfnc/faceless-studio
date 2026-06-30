@@ -1,6 +1,6 @@
 {
   "name": "faceless-studio",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Code-driven faceless explainer videos with Remotion",
   "repository": {},
   "license": "UNLICENSED",
@@ -31,6 +31,7 @@
     "transcribe": "node tools/transcribe.mjs",
     "draft": "node tools/autodraft.mjs",
     "assets": "node tools/assets.mjs",
+    "research": "node tools/research.mjs",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",

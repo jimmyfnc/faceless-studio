@@ -1,0 +1,34 @@
+{
+  "topic": "the history of money",
+  "assessment": "series",
+  "rationale": "The topic spans several distinct, self-contained eras that each carry a full video's worth of story and payoff.",
+  "angles": [
+    {
+      "title": "Why Money Was Even Invented",
+      "hook": "Before money, trade meant finding someone who wanted your goat AND had what you wanted.",
+      "summary": "A single explainer on the problem barter created and how money solved it."
+    },
+    {
+      "title": "Why Your Cash Isn't Backed by Anything",
+      "hook": "The dollar used to be gold. Now it's backed by... belief. Here's how that happened.",
+      "summary": "The shift from the gold standard to fiat, in one focused video."
+    },
+    {
+      "title": "The 5,000-Year History of Money in 8 Minutes",
+      "hook": "From shells to Bitcoin — the whole arc, fast.",
+      "summary": "A fast overview that works as a standalone or a series trailer."
+    }
+  ],
+  "series": {
+    "title": "The History of Money",
+    "rationale": "Six eras, each a self-contained explainer that builds on the last.",
+    "episodes": [
+      { "order": 1, "title": "Barter and Its Limits", "hook": "Why swapping goats doesn't scale.", "slug": "the-history-of-money-01-barter-and-its-limits" },
+      { "order": 2, "title": "The First Coins", "hook": "How stamped metal turned trust into a thing you could hold.", "slug": "the-history-of-money-02-the-first-coins" },
+      { "order": 3, "title": "Paper Money and Banking", "hook": "When a paper IOU became as good as gold.", "slug": "the-history-of-money-03-paper-money-and-banking" },
+      { "order": 4, "title": "The Gold Standard", "hook": "Tying every dollar to a vault of metal — and why it broke.", "slug": "the-history-of-money-04-the-gold-standard" },
+      { "order": 5, "title": "Fiat and Inflation", "hook": "Money backed by nothing but a government's word.", "slug": "the-history-of-money-05-fiat-and-inflation" },
+      { "order": 6, "title": "Digital Money and Crypto", "hook": "From card swipes to code that needs no bank.", "slug": "the-history-of-money-06-digital-money-and-crypto" }
+    ]
+  }
+}
