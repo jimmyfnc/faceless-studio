@@ -4,7 +4,7 @@ Code-driven **faceless explainer videos** with Remotion. The creator's recorded
 voice drives the timeline; charts/diagrams/b-roll sync to the narration. Full
 production pipeline and commands live in [WORKFLOW.md](WORKFLOW.md).
 
-**Current version: 0.7.0** (pre-launch; bumps to `1.0.0` when the channel ships
+**Current version: 0.8.0** (pre-launch; bumps to `1.0.0` when the channel ships
 its first real video).
 
 ## What this project is
@@ -23,7 +23,7 @@ npm run dev                                   # Studio on the engine sample
 npm run studio -- <channel> <slug>            # Studio on a channel video (merges brand+props)
 npm run render -- <channel> <slug>            # render → out/<channel>-<slug>.mp4
 npm run transcribe -- <channel> <slug>        # vo.* → captions.json (Whisper, word-level)
-npm run research -- <channel> "<topic>"       # topic → single/series plan (agent-driven or BYO LLM)
+npm run research -- plan <channel> "<topic>"  # idea → single/series; brief/script subcmds (agent or BYO LLM)
 npm run draft -- <channel> <slug>             # script.md + captions.json → props.json (voice-aligned)
 npm run assets -- <channel> <slug> "query"    # license-safe media (Openverse/own) → credits.json
 node tools/comfyui-generate.mjs --workflow workflows/x.json --out public/assets/<channel>/<slug> --prompt "..."

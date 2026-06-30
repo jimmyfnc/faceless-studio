@@ -4,6 +4,30 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.8.0] — 2026-06-30
+
+Research brief → script — the front of the funnel is complete: an idea becomes a
+sourced, draft `script.md`.
+
+### Added
+- **`npm run research -- brief <channel> <slug> "<angle>"`** researches a chosen
+  angle (web search → facts + sources → LLM) into `research.json` + a draft
+  `script.md` that flows straight into `transcribe` → `draft`.
+- **`npm run research -- script <channel> <slug> brief.json`** formats a brief
+  (produced by the agent or any LLM) into the same artifacts — deterministic, no
+  LLM needed. This is the clean agent-driven path: Claude searches + writes the
+  brief, the CLI formats it.
+- **Pluggable web search** (`tools/lib/search.mjs`): agent-driven by default; bring
+  your own with `RESEARCH_SEARCH=brave|tavily` + `RESEARCH_SEARCH_API_KEY`. Mirrors
+  the LLM seam.
+- The generated `script.md` carries title/text/bars/image scenes with `[VISUAL]`
+  notes and a Sources list, and parses straight back through auto-draft.
+
+### Changed
+- The research CLI now uses **positional sub-commands** (`plan` / `brief` /
+  `script`) instead of `--`-flags, because npm doesn't reliably forward a second
+  `--flag` to scripts. So plan is now `npm run research -- plan <channel> "<topic>"`.
+
 ## [0.7.0] — 2026-06-30
 
 Research — start from an idea, and bring your own LLM. This is the front of the

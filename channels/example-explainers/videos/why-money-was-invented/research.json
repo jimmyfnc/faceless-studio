@@ -1,0 +1,94 @@
+{
+  "angle": "",
+  "brief": {
+    "title": "Why Money Was Even Invented",
+    "hook": "Money exists to solve one deeply annoying problem.",
+    "sections": [
+      {
+        "kind": "title",
+        "label": "Hook",
+        "narration": "What if money was invented just to fix one deeply annoying problem?",
+        "visual": "title — \"Why Money Was Invented\" | \"A 90-second explainer\""
+      },
+      {
+        "kind": "text",
+        "label": "The problem",
+        "narration": "Before money there was barter. And barter only works if the other person happens to want exactly what you have. Economists call it the double coincidence of wants.",
+        "visual": "text — \"The double coincidence of wants\" | \"Both traders must want what the other has.\""
+      },
+      {
+        "kind": "text",
+        "label": "Why it fails",
+        "narration": "You have eggs and you want shoes. But the shoemaker doesn't want eggs. Now you're chasing a three-way trade. As towns grew and people specialized, that got nearly impossible.",
+        "visual": "text — \"Barter doesn't scale\" | \"Specialization made matches too rare.\""
+      },
+      {
+        "kind": "text",
+        "label": "The fix",
+        "narration": "So people started accepting one thing almost everyone wanted: salt, grain, metal. A universally wanted good let you split a trade in two. Sell now, buy later.",
+        "visual": "text — \"A universally-wanted good\" | \"Sell now, buy later.\""
+      },
+      {
+        "kind": "image",
+        "label": "First coins",
+        "narration": "Around 630 BCE, the kingdom of Lydia stamped the first standardized coins out of electrum, and the idea spread across the ancient world.",
+        "visual": "image — \"assets/example-explainers/why-money-was-invented/lydian-coin.jpg\" | \"Lydian electrum coin — public domain\""
+      },
+      {
+        "kind": "text",
+        "label": "Payoff",
+        "narration": "So money isn't really about gold or paper. It's a shared agreement that turns one impossible trade into two easy ones.",
+        "visual": "text — \"Money is an agreement\" | \"One impossible trade becomes two easy ones.\""
+      }
+    ],
+    "facts": [
+      {
+        "text": "Barter requires a 'double coincidence of wants' — both traders must want what the other has.",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Coincidence_of_wants",
+        "sourceTitle": "Coincidence of wants — Wikipedia"
+      },
+      {
+        "text": "Money emerged as a universally-wanted medium so each half of a transaction could be separated (Adam Smith).",
+        "sourceUrl": "https://globalgoodcorp.org/the-double-coincidence-of-wants-why-money-emerged/",
+        "sourceTitle": "The Double Coincidence of Wants — Globalgood"
+      },
+      {
+        "text": "The Mesopotamian shekel (~5,000 years ago) was the first known currency; debt records predate coins.",
+        "sourceUrl": "https://theconversation.com/when-and-why-did-people-first-start-using-money-78887",
+        "sourceTitle": "When and why did people first start using money? — The Conversation"
+      },
+      {
+        "text": "The first standardized coins were struck in Lydia (modern Turkey) around 630 BCE from electrum.",
+        "sourceUrl": "https://en.wikipedia.org/wiki/History_of_money",
+        "sourceTitle": "History of money — Wikipedia"
+      }
+    ],
+    "assetQueries": [
+      "Lydian electrum coin",
+      "ancient barter market",
+      "Mesopotamian shekel tablet"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Coincidence of wants — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Coincidence_of_wants",
+      "snippet": "Barter requires a 'double coincidence of wants' — both traders must want what the other has."
+    },
+    {
+      "title": "The Double Coincidence of Wants — Globalgood",
+      "url": "https://globalgoodcorp.org/the-double-coincidence-of-wants-why-money-emerged/",
+      "snippet": "Money emerged as a universally-wanted medium so each half of a transaction could be separated (Adam Smith)."
+    },
+    {
+      "title": "When and why did people first start using money? — The Conversation",
+      "url": "https://theconversation.com/when-and-why-did-people-first-start-using-money-78887",
+      "snippet": "The Mesopotamian shekel (~5,000 years ago) was the first known currency; debt records predate coins."
+    },
+    {
+      "title": "History of money — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/History_of_money",
+      "snippet": "The first standardized coins were struck in Lydia (modern Turkey) around 630 BCE from electrum."
+    }
+  ]
+}

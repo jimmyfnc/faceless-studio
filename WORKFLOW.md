@@ -71,39 +71,48 @@ React compositions plus a props editor and a render button.
   shows whatever that code renders. **Claude edits the code; you preview and
   fine-tune in Studio.** That division is the whole point of the hybrid flow.
 
-## Research → plan (front of the funnel)
+## Research → script (front of the funnel)
 
-Start from an idea. Research narrows a topic to **one video** or breaks it into a
-**series**:
+Start from an idea. Three positional sub-commands (positional so npm forwards them
+reliably):
 
 ```bash
-npm run research -- <channel> "<topic>" [--angles 5] [--episodes 6]
-npm run research -- example-explainers "the history of money"
+# 1. PLAN: narrow a topic to one video or a series
+npm run research -- plan <channel> "<topic>" [--angles 5] [--episodes 6]
+npm run research -- plan example-explainers "the history of money"
+
+# 2. BRIEF: research a chosen angle (search + LLM, or agent-guided)
+npm run research -- brief <channel> <slug> "<angle>"
+
+# 3. SCRIPT: format a brief.json (from the agent or any LLM) → research.json + script.md
+npm run research -- script <channel> <slug> brief.json
 ```
 
-Output `channels/<channel>/research/<topic>.plan.json`: a `single`-vs-`series`
+**Plan** writes `channels/<channel>/research/<topic>.plan.json`: a `single`-vs-`series`
 assessment, sharp single-video **angles**, and — if broad — an ordered **series**
 plan (each episode gets a slug like `the-history-of-money-02-the-first-coins`).
 Pick an angle → make one video; pick the series → make each episode a normal
-`videos/<slug>/` (a series is just ordered episode videos in the channel).
-Drafting the chosen angle into a `script.md` is the next step.
+`videos/<slug>/`. **Brief**/**script** write `videos/<slug>/{research.json, script.md}` —
+a sourced draft script that flows into `transcribe` → `draft`.
 
-### Bring your own LLM (no lock-in)
+### Bring your own LLM + search (no lock-in)
 
-Research needs an LLM — two ways to run it:
-
-- **Agent-driven (default, no token):** in Claude Code, Claude plans + researches.
-  With no LLM configured, `npm run research` prints the exact prompt to run.
+- **Agent-driven (default, no token):** in Claude Code, Claude plans, searches, and
+  drafts. With nothing configured, each command prints the exact prompt to run.
 - **Bring your own LLM (headless):** any OpenAI-compatible endpoint — OpenAI,
-  OpenRouter, Groq, Together, Azure, and **local/free Ollama, LM Studio, vLLM**:
+  OpenRouter, Groq, Together, Azure, and **local/free Ollama, LM Studio, vLLM**.
+- **Bring your own search (headless):** Brave or Tavily.
 
 ```bash
-# OpenAI (or compatible)
+# LLM — OpenAI (or compatible)
 setx RESEARCH_LLM api
 setx RESEARCH_LLM_API_KEY "sk-..."                  # default model gpt-4o-mini
-# Local Ollama — free, no key
+# LLM — local Ollama (free, no key)
 setx RESEARCH_LLM_BASE_URL "http://localhost:11434/v1"
 setx RESEARCH_LLM_MODEL "llama3.1"
+# Search (for headless brief)
+setx RESEARCH_SEARCH brave
+setx RESEARCH_SEARCH_API_KEY "..."                  # or RESEARCH_SEARCH=tavily
 ```
 
 No one is forced onto Claude or a paid token; a free local model works.

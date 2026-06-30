@@ -20,15 +20,19 @@ gaps to the north star, in build order:
 
 1. ~~**Visuals** — image/video scenes~~ ✅ `0.5.0`.
 2. ~~**Assets** — licensed/PD fetch + provenance~~ ✅ `0.6.0` (more providers + ComfyUI wiring can follow).
-3. **Front of funnel** — research: ✅ topic → single/series **plan** + BYO-LLM (`0.7.0`); **brief → script.md** is next.
-4. **Multi-format** — short cuts for vertical platforms.
+3. ~~**Front of funnel** — research (plan + brief → script, BYO LLM + search)~~ ✅ `0.7.0`–`0.8.0`.
+4. **Multi-format** — short cuts for vertical platforms (recommended next).
 5. **Ends** — originality/licensing safeguards, then publish + automation.
+
+The full funnel now runs: idea → **research** → script → record → transcribe →
+auto-draft → **assets** → render. What's left is multi-format output, safeguards,
+and publish/automation.
 
 ## Pipeline (ranked toward the north star)
 
 | Idea | Effort | Notes |
 |---|---|---|
-| Research: brief → script | 🟡 | **Recommended next.** Builds on the `0.7.0` plan + LLM seam: deep-research a chosen angle (web search → facts + sources) → `research.json` → `script.md` via the tested `briefToScript`. Add a pluggable **search** provider (agent `WebSearch` default; Brave/Tavily for headless) mirroring the LLM seam. |
+| Short cuts (Shorts/Reels/TikTok) | 🟡 | **Recommended next.** A 1080×1920 composition reusing `ExplainerVideo`, plus auto-selecting highlight segment(s) from the long-form → render vertical cuts. One source → long-form + shorts. |
 | More asset providers + ComfyUI wiring | 🟡 | Add NASA / Wikimedia / Pexels (key) providers behind the same license filter; run `comfyui-generate.mjs` from the pipeline and auto-register output via `--own`. Builds on the `0.6.0` asset core. |
 | Research → script | 🔴 | Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel. |
 | Short cuts (Shorts/Reels/TikTok) | 🟡 | 9:16 composition reusing `ExplainerVideo`, plus auto-selecting highlight segments from the long-form → render vertical cuts per platform. |
