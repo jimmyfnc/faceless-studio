@@ -4,7 +4,7 @@ Code-driven **faceless explainer videos** with Remotion. The creator's recorded
 voice drives the timeline; charts/diagrams/b-roll sync to the narration. Full
 production pipeline and commands live in [WORKFLOW.md](WORKFLOW.md).
 
-**Current version: 0.5.0** (pre-launch; bumps to `1.0.0` when the channel ships
+**Current version: 0.6.0** (pre-launch; bumps to `1.0.0` when the channel ships
 its first real video).
 
 ## What this project is
@@ -24,6 +24,7 @@ npm run studio -- <channel> <slug>            # Studio on a channel video (merge
 npm run render -- <channel> <slug>            # render → out/<channel>-<slug>.mp4
 npm run transcribe -- <channel> <slug>        # vo.* → captions.json (Whisper, word-level)
 npm run draft -- <channel> <slug>             # script.md + captions.json → props.json (voice-aligned)
+npm run assets -- <channel> <slug> "query"    # license-safe media (Openverse/own) → credits.json
 node tools/comfyui-generate.mjs --workflow workflows/x.json --out public/assets/<channel>/<slug> --prompt "..."
 npm test                                      # vitest: schema/fixture, brand merge, caption merge
 ./scripts/install-hooks.sh                    # run once per clone to install the pre-commit hook

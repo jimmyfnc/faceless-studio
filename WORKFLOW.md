@@ -128,8 +128,28 @@ The `image`/`video` caption doubles as an **attribution label** — put the sour
 `public/assets/<channel>/<slug>/` and reference them by their `assets/…` path
 (heavy `*.mp4/.wav` are gitignored; `*.png/.jpg` are committed). An `image`/`video`
 `src` may also be an `https://` URL. Generate visuals with ComfyUI (below) or the
-`gemini-imagegen` / `nano-banana-2` skills, fetch public-domain/licensed media, or
-shoot your own — all land in the same folder.
+`gemini-imagegen` / `nano-banana-2` skills, fetch public-domain/licensed media
+(next), or shoot your own — all land in the same folder.
+
+### Sourcing copyright-safe assets
+
+```bash
+# Search Openverse (CC + public-domain), license-filter, download, and credit:
+npm run assets -- <channel> <slug> "<query>" [count]
+npm run assets -- example-explainers compound-interest "stock market" 4
+
+# Credit your own / AI-generated (e.g. ComfyUI) file already in the folder:
+npm run assets -- <channel> <slug> --own diagram.png --source "ComfyUI" --title "Compounding"
+```
+
+Only **license-safe** results are kept — non-commercial (NC), no-derivatives (ND),
+and unknown licenses are dropped automatically (the policy lives in
+`tools/lib/licensing.mjs`, conservative by default). Provenance + a ready-to-paste
+attribution block are written to `channels/<channel>/videos/<slug>/credits.json`;
+put the printed attribution into the `image`/`video` caption and the video
+description. **Safest of all is AI-generated or your own media** (`--own`) — you
+hold the rights. *Not legal advice — it reduces risk and records provenance; you
+confirm before publishing. Never add unlicensed music.*
 
 ```bash
 npm run studio -- <channel> <slug>

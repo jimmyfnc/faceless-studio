@@ -4,6 +4,28 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.6.0] — 2026-06-30
+
+Copyright-safe asset sourcing — gather real photos (and credit your own /
+AI-generated media) without the licensing headache.
+
+### Added
+- **`npm run assets -- <channel> <slug> "<query>"`** searches Openverse (keyless,
+  CC + public-domain), keeps only **license-safe** results, downloads them into
+  `public/assets/<channel>/<slug>/`, and writes provenance + a ready-to-paste
+  attribution block to `credits.json`. It prints a `[VISUAL: image …]` line to drop
+  straight into your script.
+- **Conservative license policy** (`tools/lib/licensing.mjs`): non-commercial
+  (NC), no-derivatives (ND), and unknown licenses are blocked; CC0/public-domain
+  need no attribution; CC BY/BY-SA are allowed with attribution captured. Your own
+  / AI-generated media is `own` (you hold the rights).
+- **`--own`** registers an AI-generated/your-own file (e.g. from ComfyUI) into
+  `credits.json`, so all media — fetched or generated — is tracked in one place.
+- The `image`/`video` scene `caption` is where the attribution shows on-screen.
+
+Not legal advice — this reduces risk and records provenance; confirm before
+publishing, and never add unlicensed music.
+
 ## [0.5.0] — 2026-06-30
 
 Images and video — the engine can now show photos and b-roll, not just

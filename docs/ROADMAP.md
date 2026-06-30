@@ -13,13 +13,14 @@ Effort: 🟢 small · 🟡 medium · 🔴 large · ⚫ epic
 > automated as far as possible — and **original by construction** so it holds up on
 > YouTube / Shorts / TikTok / Reels.
 
-What works today (`0.5.0`): the middle + visuals — script → record → transcribe →
-auto-draft → render long-form, with **image + video scenes** (photos, b-roll,
-your own media). The gaps to the north star, in build order:
+What works today (`0.6.0`): script → record → transcribe → auto-draft → render
+long-form, with **image + video scenes** and **copyright-safe asset sourcing**
+(Openverse fetch + license filter + `credits.json`; ComfyUI/own via `--own`). The
+gaps to the north star, in build order:
 
-1. ~~**Visuals** — image/video scenes~~ ✅ shipped in `0.5.0`.
-2. **Assets** — gather (licensed/PD) + generate (AI), now that scenes can show them.
-3. **Front of funnel** — research → script.
+1. ~~**Visuals** — image/video scenes~~ ✅ `0.5.0`.
+2. ~~**Assets** — licensed/PD fetch + provenance~~ ✅ `0.6.0` (more providers + ComfyUI wiring can follow).
+3. **Front of funnel** — research → script (recommended next).
 4. **Multi-format** — short cuts for vertical platforms.
 5. **Ends** — originality/licensing safeguards, then publish + automation.
 
@@ -27,7 +28,8 @@ your own media). The gaps to the north star, in build order:
 
 | Idea | Effort | Notes |
 |---|---|---|
-| Asset sourcing & generation | 🔴 | **Recommended next.** Now that `image`/`video` scenes exist (`0.5.0`): **AI-gen (ComfyUI) first** (we have `comfyui-generate.mjs`), then CC0/public-domain + permissive stock (NASA, Wikimedia, Openverse, Pexels) behind a license filter; per-asset provenance + attribution → `credits.json` (the scene `caption` shows it). Avoid CC-NC/ND and any music. |
+| Research → script | 🔴 | **Recommended next.** Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel — start from an idea, not a blank script. |
+| More asset providers + ComfyUI wiring | 🟡 | Add NASA / Wikimedia / Pexels (key) providers behind the same license filter; run `comfyui-generate.mjs` from the pipeline and auto-register output via `--own`. Builds on the `0.6.0` asset core. |
 | Research → script | 🔴 | Topic ideation + web research (`WebSearch`/`WebFetch`, `deep-research`) → `research.json` (outline + facts + sources) → a draft `script.md`. Front of the funnel. |
 | Short cuts (Shorts/Reels/TikTok) | 🟡 | 9:16 composition reusing `ExplainerVideo`, plus auto-selecting highlight segments from the long-form → render vertical cuts per platform. |
 | Originality & platform-safety | 🟡 | Provenance/`credits.json`, original script + VO + visuals, no unlicensed music; a pre-publish checklist so videos hold up against Content-ID + "reused content" policies. (Risk reduction, not a guarantee.) |

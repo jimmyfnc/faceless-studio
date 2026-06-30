@@ -74,6 +74,7 @@ npm run studio -- <channel> <slug>         # Studio on a specific channel video
 npm run render -- <channel> <slug> [out]   # render a channel video to out/
 npm run transcribe -- <channel> <slug>     # voiceover → captions.json (Whisper)
 npm run draft -- <channel> <slug>          # script.md + captions → props.json (voice-aligned)
+npm run assets -- <channel> <slug> "query" # source copyright-safe media → credits.json
 npm run lint                               # eslint + tsc
 npm test                                   # vitest (schema, brand merge, captions)
 npm run upgrade                            # upgrade Remotion (verify a render after)
