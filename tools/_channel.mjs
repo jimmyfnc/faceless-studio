@@ -49,8 +49,3 @@ export async function writeMergedProps(channel, slug) {
   await writeFile(out, JSON.stringify(merged));
   return out;
 }
-
-/** The Remotion CLI launcher (npx) for the current platform. */
-export function npx() {
-  return process.platform === "win32" ? "npx.cmd" : "npx";
-}

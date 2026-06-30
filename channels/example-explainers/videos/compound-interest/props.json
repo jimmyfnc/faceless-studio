@@ -2,36 +2,305 @@
   "sections": [
     {
       "kind": "title",
-      "durationInFrames": 90,
+      "durationInFrames": 140,
       "text": "How Compound Interest Works",
       "subtitle": "A 60-second explainer"
     },
     {
       "kind": "bars",
-      "durationInFrames": 150,
+      "durationInFrames": 233,
       "heading": "$1,000 invested at 8% / year",
       "data": [
-        { "label": "Year 0", "value": 1000 },
-        { "label": "Year 5", "value": 1469 },
-        { "label": "Year 10", "value": 2159 },
-        { "label": "Year 20", "value": 4661 },
-        { "label": "Year 30", "value": 10063 }
+        {
+          "label": "Year 0",
+          "value": 1000
+        },
+        {
+          "label": "Year 5",
+          "value": 1469
+        },
+        {
+          "label": "Year 10",
+          "value": 2159
+        },
+        {
+          "label": "Year 20",
+          "value": 4661
+        },
+        {
+          "label": "Year 30",
+          "value": 10063
+        }
       ]
     },
     {
       "kind": "text",
-      "durationInFrames": 120,
+      "durationInFrames": 186,
       "heading": "Time beats timing.",
       "body": "Start early — the curve does the work."
     }
   ],
   "captions": [
-    { "text": "How", "startMs": 200, "endMs": 520 },
-    { "text": "compound", "startMs": 520, "endMs": 1050 },
-    { "text": "interest", "startMs": 1050, "endMs": 1550 },
-    { "text": "quietly", "startMs": 1550, "endMs": 2000 },
-    { "text": "builds", "startMs": 2000, "endMs": 2400 },
-    { "text": "real", "startMs": 2400, "endMs": 2700 },
-    { "text": "wealth", "startMs": 2700, "endMs": 3200 }
-  ]
+    {
+      "text": "What",
+      "startMs": 40,
+      "endMs": 220
+    },
+    {
+      "text": "if",
+      "startMs": 220,
+      "endMs": 350
+    },
+    {
+      "text": "doing",
+      "startMs": 350,
+      "endMs": 600
+    },
+    {
+      "text": "nothing",
+      "startMs": 600,
+      "endMs": 980
+    },
+    {
+      "text": "was",
+      "startMs": 980,
+      "endMs": 1140
+    },
+    {
+      "text": "the",
+      "startMs": 1140,
+      "endMs": 1300
+    },
+    {
+      "text": "smartest",
+      "startMs": 1300,
+      "endMs": 1760
+    },
+    {
+      "text": "money",
+      "startMs": 1760,
+      "endMs": 1980
+    },
+    {
+      "text": "move",
+      "startMs": 1980,
+      "endMs": 2190
+    },
+    {
+      "text": "you",
+      "startMs": 2190,
+      "endMs": 2430
+    },
+    {
+      "text": "could",
+      "startMs": 2430,
+      "endMs": 3300
+    },
+    {
+      "text": "make?",
+      "startMs": 3300,
+      "endMs": 3600
+    },
+    {
+      "text": "Say",
+      "startMs": 3600,
+      "endMs": 3840
+    },
+    {
+      "text": "you",
+      "startMs": 3840,
+      "endMs": 4080
+    },
+    {
+      "text": "invest",
+      "startMs": 4080,
+      "endMs": 4560
+    },
+    {
+      "text": "$1,000",
+      "startMs": 4560,
+      "endMs": 5770
+    },
+    {
+      "text": "and",
+      "startMs": 5770,
+      "endMs": 6010
+    },
+    {
+      "text": "earn",
+      "startMs": 6010,
+      "endMs": 6570
+    },
+    {
+      "text": "8%",
+      "startMs": 6570,
+      "endMs": 6650
+    },
+    {
+      "text": "a",
+      "startMs": 6650,
+      "endMs": 7100
+    },
+    {
+      "text": "year.",
+      "startMs": 7100,
+      "endMs": 7140
+    },
+    {
+      "text": "After",
+      "startMs": 7140,
+      "endMs": 7440
+    },
+    {
+      "text": "five",
+      "startMs": 7440,
+      "endMs": 7680
+    },
+    {
+      "text": "years,",
+      "startMs": 7680,
+      "endMs": 8090
+    },
+    {
+      "text": "it's",
+      "startMs": 8090,
+      "endMs": 8340
+    },
+    {
+      "text": "about",
+      "startMs": 8340,
+      "endMs": 8640
+    },
+    {
+      "text": "1,500.",
+      "startMs": 8640,
+      "endMs": 9680
+    },
+    {
+      "text": "After",
+      "startMs": 9680,
+      "endMs": 10180
+    },
+    {
+      "text": "30?",
+      "startMs": 10180,
+      "endMs": 11080
+    },
+    {
+      "text": "Over",
+      "startMs": 11080,
+      "endMs": 11360
+    },
+    {
+      "text": "10,000.",
+      "startMs": 11360,
+      "endMs": 12740
+    },
+    {
+      "text": "The",
+      "startMs": 12740,
+      "endMs": 12890
+    },
+    {
+      "text": "lesson",
+      "startMs": 12890,
+      "endMs": 13200
+    },
+    {
+      "text": "isn't",
+      "startMs": 13200,
+      "endMs": 13450
+    },
+    {
+      "text": "timing",
+      "startMs": 13450,
+      "endMs": 13760
+    },
+    {
+      "text": "the",
+      "startMs": 13760,
+      "endMs": 13930
+    },
+    {
+      "text": "market.",
+      "startMs": 13930,
+      "endMs": 14440
+    },
+    {
+      "text": "It's",
+      "startMs": 14440,
+      "endMs": 14760
+    },
+    {
+      "text": "time",
+      "startMs": 14760,
+      "endMs": 15080
+    },
+    {
+      "text": "in",
+      "startMs": 15080,
+      "endMs": 15240
+    },
+    {
+      "text": "the",
+      "startMs": 15240,
+      "endMs": 15480
+    },
+    {
+      "text": "market.",
+      "startMs": 15480,
+      "endMs": 16240
+    },
+    {
+      "text": "Start",
+      "startMs": 16240,
+      "endMs": 16580
+    },
+    {
+      "text": "early,",
+      "startMs": 16580,
+      "endMs": 17050
+    },
+    {
+      "text": "and",
+      "startMs": 17050,
+      "endMs": 17250
+    },
+    {
+      "text": "the",
+      "startMs": 17250,
+      "endMs": 17450
+    },
+    {
+      "text": "curve",
+      "startMs": 17450,
+      "endMs": 17790
+    },
+    {
+      "text": "does",
+      "startMs": 17790,
+      "endMs": 18060
+    },
+    {
+      "text": "the",
+      "startMs": 18060,
+      "endMs": 18260
+    },
+    {
+      "text": "work",
+      "startMs": 18260,
+      "endMs": 18570
+    },
+    {
+      "text": "for",
+      "startMs": 18570,
+      "endMs": 18570
+    },
+    {
+      "text": "you.",
+      "startMs": 18570,
+      "endMs": 19240
+    }
+  ],
+  "voiceoverSrc": "assets/example-explainers/compound-interest/vo.mp3"
 }

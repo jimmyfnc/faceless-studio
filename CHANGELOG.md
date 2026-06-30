@@ -4,6 +4,28 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.3.0] — 2026-06-30
+
+Whisper transcription — your voice can now drive the timeline.
+
+### Added
+- **`npm run transcribe -- <channel> <slug> [model]`** turns a recorded
+  voiceover (`public/assets/<channel>/<slug>/vo.wav|mp3|m4a`) into word-level
+  `captions.json`. It resamples to 16kHz with Remotion's bundled ffmpeg (no
+  system ffmpeg needed) and installs whisper.cpp + the model on first run
+  (cached to a gitignored `whisper.cpp/`). Sub-word tokens (`$`, `1`, `,`,
+  `000`) are merged into whole words so captions read naturally. Default model
+  `medium.en`; pass `base.en` for a faster, lighter run.
+- The transcription logic lives in `tools/lib/transcribe.mjs` as an importable
+  module, so the future web app and other tooling can reuse it.
+- The bundled `example-explainers/compound-interest` video now ships with a real
+  `captions.json` and a `voiceoverSrc`, so its duration follows the narration.
+
+### Fixed
+- `npm run render` / `npm run studio` now actually launch on Windows. The
+  wrappers spawned `npx.cmd` in a way Node 18+ refuses for `.cmd` files; they
+  now go through a shared, quoting-aware runner (`tools/_run.mjs`).
+
 ## [0.2.0] — 2026-06-24
 
 Multi-channel foundation — the engine is now reusable by other creators, and a

@@ -7,15 +7,11 @@
  *
  * (Plain `npm run dev` opens Studio on the engine's sample instead.)
  */
-import { spawnSync } from "node:child_process";
-import { writeMergedProps, npx } from "./_channel.mjs";
+import { writeMergedProps } from "./_channel.mjs";
+import { runRemotion } from "./_run.mjs";
 
 const [channel, slug] = process.argv.slice(2);
 const propsFile = await writeMergedProps(channel, slug);
 
-const res = spawnSync(
-  npx(),
-  ["remotion", "studio", `--props=${propsFile}`],
-  { stdio: "inherit" },
-);
+const res = runRemotion(["studio", `--props=${propsFile}`]);
 process.exit(res.status ?? 1);

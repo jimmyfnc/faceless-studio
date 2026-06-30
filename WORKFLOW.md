@@ -79,16 +79,26 @@ React compositions plus a props editor and a render button.
    read, build & time the whole video against it, review, **then** record your
    real voice to the locked script and swap the `.wav`. Fast iteration +
    authentic final track.
-3. Record → `public/assets/<channel>/<slug>/vo.wav`.
-4. Transcribe with Whisper → `channels/<channel>/videos/<slug>/captions.json`
-   (`{ text, startMs, endMs }[]`).
+3. Record → `public/assets/<channel>/<slug>/vo.wav` (or `vo.mp3`/`vo.m4a`).
+4. Transcribe with Whisper → `channels/<channel>/videos/<slug>/captions.json`.
 5. Set `voiceoverSrc` + `captions` in the video's `props.json`.
 
-### Whisper transcription (next piece to wire)
+### Whisper transcription
 
-The Remotion skill's `subtitles.md` rule covers `@remotion/install-whisper-cpp`
-for word-level timestamps. Output maps directly onto `CaptionTrack` and onto
-each section's duration so visuals lock to your narration.
+```bash
+npm run transcribe -- <channel> <slug> [model]   # default model: medium.en
+npm run transcribe -- example-explainers compound-interest base.en
+```
+
+Reads `public/assets/<channel>/<slug>/vo.(wav|mp3|m4a)`, resamples to 16kHz with
+Remotion's bundled ffmpeg (no system ffmpeg needed), runs `@remotion/install-whisper-cpp`
+(installs whisper.cpp + the model on first run, cached to a gitignored
+`whisper.cpp/`), and writes word-level `captions.json` (`{ text, startMs, endMs }[]`).
+Sub-word tokens (`$`, `1`, `,`, `000`) are merged into whole words.
+
+Then drop the words into the video's `props.json` `captions` (Stage 3 auto-draft
+will do this and align section durations to the words; for now copy them in).
+With a `voiceoverSrc` set, the video's total duration matches the VO automatically.
 
 ## ComfyUI visuals
 

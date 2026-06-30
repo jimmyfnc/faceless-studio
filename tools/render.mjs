@@ -5,17 +5,13 @@
  *   npm run render -- <channel> <slug> [outFile]
  *   npm run render -- example-explainers compound-interest
  */
-import { spawnSync } from "node:child_process";
 import { join } from "node:path";
-import { writeMergedProps, npx } from "./_channel.mjs";
+import { writeMergedProps } from "./_channel.mjs";
+import { runRemotion } from "./_run.mjs";
 
 const [channel, slug, outArg] = process.argv.slice(2);
 const propsFile = await writeMergedProps(channel, slug);
 const out = outArg || join("out", `${channel}-${slug}.mp4`);
 
-const res = spawnSync(
-  npx(),
-  ["remotion", "render", "ExplainerVideo", `--props=${propsFile}`, out],
-  { stdio: "inherit" },
-);
+const res = runRemotion(["render", "ExplainerVideo", `--props=${propsFile}`, out]);
 process.exit(res.status ?? 1);
