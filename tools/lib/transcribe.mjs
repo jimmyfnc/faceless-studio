@@ -61,10 +61,17 @@ export async function transcribeToWords({ inputPath, model = "medium.en", onProg
 
   // toCaptions takes the whole transcribe result (not just .transcription).
   const { captions } = toCaptions({ whisperCppOutput });
+  return mergeCaptionTokens(captions);
+}
 
-  // Whisper emits sub-word tokens (e.g. "$", "1", ",", "000") and marks real
-  // word starts with a leading space. Merge continuation tokens (and trailing
-  // punctuation) into whole words so captions read naturally.
+/**
+ * Whisper emits sub-word tokens (e.g. "$", "1", ",", "000") and marks real
+ * word starts with a leading space. Merge continuation tokens (and trailing
+ * punctuation) into whole words so captions read naturally.
+ * @param {Array<{text: string, startMs: number, endMs: number}>} captions
+ * @returns {Array<{text: string, startMs: number, endMs: number}>}
+ */
+export function mergeCaptionTokens(captions) {
   const words = [];
   for (const c of captions) {
     const text = c.text.trim();

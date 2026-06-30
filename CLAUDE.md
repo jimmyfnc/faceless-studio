@@ -24,6 +24,7 @@ npm run studio -- <channel> <slug>            # Studio on a channel video (merge
 npm run render -- <channel> <slug>            # render → out/<channel>-<slug>.mp4
 npm run transcribe -- <channel> <slug>        # vo.* → captions.json (Whisper, word-level)
 node tools/comfyui-generate.mjs --workflow workflows/x.json --out public/assets/<channel>/<slug> --prompt "..."
+npm test                                      # vitest: schema/fixture, brand merge, caption merge
 ./scripts/install-hooks.sh                    # run once per clone to install the pre-commit hook
 ```
 

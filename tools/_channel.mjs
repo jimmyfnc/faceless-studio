@@ -10,6 +10,15 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
+/**
+ * Merge a channel's brand into a video's props. The engine reads `brand` from
+ * props; when absent it falls back to `defaultBrand`. A supplied brand always
+ * wins over any `brand` already on props.
+ */
+export function mergeBrandIntoProps(props, brand) {
+  return brand ? { ...props, brand } : props;
+}
+
 /** Read brand + props for <channel>/<slug>, merge, write a temp file, return its path. */
 export async function writeMergedProps(channel, slug) {
   if (!channel || !slug) {
@@ -42,7 +51,7 @@ export async function writeMergedProps(channel, slug) {
     // No brand.json → the engine falls back to defaultBrand.
   }
 
-  const merged = brand ? { ...props, brand } : props;
+  const merged = mergeBrandIntoProps(props, brand);
   const dir = join(tmpdir(), "faceless-studio");
   await mkdir(dir, { recursive: true });
   const out = join(dir, `${channel}__${slug}.props.json`);
