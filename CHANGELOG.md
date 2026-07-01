@@ -4,6 +4,21 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.11.0] — 2026-06-30
+
+Batch image generation — make a whole video's worth of on-brand stills at once.
+
+### Added
+- **`npm run generate -- <channel> <slug> <prompts.json>`** runs a ComfyUI
+  workflow once per prompt, saves each image with a predictable name
+  (`s01a.png`, …), and registers it in `credits.json` (license `own`). It reads
+  the channel's `style.json` `imageStyle` as the default style, so every image
+  matches the channel look. `--candidates N` renders N variations per prompt for
+  curation; `--workflow` selects the workflow.
+- Bundled API-format ComfyUI workflows under `workflows/`: **`flux-schnell`**
+  (Apache-licensed, 4-step, a big quality jump over SDXL base), plus `sdxl` and
+  `animagine`.
+
 ## [0.10.0] — 2026-06-30
 
 Richer visuals — two new scene types, so a video isn't just charts and cards.
