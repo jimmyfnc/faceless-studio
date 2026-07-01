@@ -4,6 +4,20 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.12.0] — 2026-06-30
+
+Image QC — catch generative defects before they ship.
+
+### Added
+- **`npm run qc -- <channel> <slug>`** reviews every generated image for baked-in
+  text, bad anatomy (extra/fused/overlapping hands), garbled shapes, and
+  off-brand style, then writes `qc-report.json` listing the images to regenerate
+  (and exits non-zero when anything is flagged, so it can gate a build).
+- Pluggable vision provider, same seam as research: **agent-driven by default**
+  (Claude Code reviews the batch in-session and fills the report); or **bring your
+  own** OpenAI-compatible *vision* endpoint with `QC_VISION_BASE_URL` +
+  `QC_VISION_MODEL` (+ key) — including a free local Ollama / LM Studio model.
+
 ## [0.11.0] — 2026-06-30
 
 Batch image generation — make a whole video's worth of on-brand stills at once.
