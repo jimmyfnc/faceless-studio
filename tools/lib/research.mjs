@@ -76,23 +76,31 @@ export function parsePlan(text) {
 
 /* ── BRIEF: research one chosen angle into an outline + facts ─────────────── */
 
-export function buildBriefPrompt(angle, { sources = [] } = {}) {
+export function buildBriefPrompt(angle, { sources = [], targetMinutes = 5 } = {}) {
+  const targetWords = Math.round(targetMinutes * 140);
   const system =
-    "You are scripting one faceless explainer video. Use ONLY the provided sources " +
-    "for facts; never invent statistics. Write spoken-language narration. Reply with " +
-    "STRICT JSON only.";
+    "You are scripting one faceless explainer video that must actually TEACH. For each " +
+    "idea: define it plainly, explain WHY it's true or matters, and give a concrete, " +
+    "specific example (a before/after, a number, a tiny scenario) — never just name a " +
+    "concept and move on. Write natural spoken narration. Use ONLY the provided sources " +
+    "for facts; never invent statistics. Reply with STRICT JSON only.";
   const sourceText = sources.length
     ? sources.map((s, i) => `[${i + 1}] ${s.title || s.url}\n${(s.snippet || "").slice(0, 600)}\n${s.url}`).join("\n\n")
     : "(no sources provided — keep claims general and mark facts that need verification)";
   const prompt =
     `Video angle: ${typeof angle === "string" ? angle : JSON.stringify(angle)}\n\n` +
     `Sources:\n${sourceText}\n\n` +
+    `Length: aim for about ${targetMinutes} minutes (~${targetWords} words of narration). ` +
+    `Use enough sections (typically 9-16) that every point gets a real explanation WITH a ` +
+    `concrete example — depth over breadth. Open with a hook, build logically, and close ` +
+    `with a recap + the one takeaway. Vary scene kinds; suggest images/charts where they ` +
+    `aid understanding.\n\n` +
     `Return JSON:\n` +
     `{\n` +
     `  "title": string,\n` +
     `  "hook": string,\n` +
     `  "sections": [ { "kind": "title"|"text"|"bars"|"image"|"video",\n` +
-    `      "label": string, "narration": string,\n` +
+    `      "label": string, "narration": string,   // 2-5 sentences of real teaching\n` +
     `      "visual": string } ],   // visual in [VISUAL] payload form, e.g. 'title — "Main" | "Sub"'\n` +
     `  "facts": [ { "text": string, "sourceUrl": string, "sourceTitle": string } ],\n` +
     `  "assetQueries": [ string ]  // search terms for copyright-safe images\n` +

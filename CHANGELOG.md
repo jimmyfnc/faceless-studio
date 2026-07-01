@@ -4,6 +4,17 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.13.0] — 2026-06-30
+
+Deeper research briefs — scripts that actually teach.
+
+### Changed
+- The brief prompt now targets a runtime (`~5 min` by default, ~140 words/min),
+  asks for **9–16 sections each with a concrete example**, and demands real
+  teaching (a before/after, a number, a tiny scenario) over just name-dropping —
+  so a drafted script is substantial enough to hold up as a YouTube explainer
+  instead of a 60-second skim.
+
 ## [0.12.0] — 2026-06-30
 
 Image QC — catch generative defects before they ship.
