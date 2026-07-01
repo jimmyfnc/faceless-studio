@@ -4,6 +4,27 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.10.0] — 2026-06-30
+
+Richer visuals — two new scene types, so a video isn't just charts and cards.
+
+### Added
+- **Montage scene** — a sequence of full-frame images that crossfade with a slow
+  Ken Burns push, a concept label top-left, and a legibility gradient behind the
+  captions. This is the "lots going on" look: images change every few seconds
+  behind the narration. Auto-draft turns any image-backed section into a montage
+  (drop `s01*.png`, `s02*.png`, … into the video's asset folder).
+- **Diagram scene** — engine-drawn, so it can't hallucinate or bake in garbled
+  text. Three layouts, nodes revealed one at a time with a spring: `flow` (a
+  left→right pipeline), `steps` (a numbered list), and `stack` (slabs built
+  bottom-up, active layer highlighted). Author it from the script:
+  `[VISUAL: diagram — "Heading" | flow | "A; B*; C"]` (a `*` marks the active node).
+
+### Changed
+- The `ExplainerVideo` section switch now covers montage + diagram; auto-draft
+  emits both, and a diagram section opts out of the montage image-upgrade even
+  when matching images exist.
+
 ## [0.9.1] — 2026-06-30
 
 ### Changed

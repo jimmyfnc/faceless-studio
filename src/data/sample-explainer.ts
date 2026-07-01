@@ -35,6 +35,17 @@ export const sampleExplainer: ExplainerProps = {
       heading: "Time beats timing.",
       body: "Start early — the curve does the work.",
     },
+    {
+      kind: "diagram",
+      durationInFrames: 120,
+      heading: "The compounding loop",
+      layout: "flow",
+      nodes: [
+        { label: "Earn interest" },
+        { label: "Reinvest it" },
+        { label: "Bigger base", active: true },
+      ],
+    },
   ],
   captions: [
     { text: "How", startMs: 200, endMs: 520 },

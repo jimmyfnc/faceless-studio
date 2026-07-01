@@ -86,6 +86,27 @@ describe("sceneContent", () => {
     expect(fields.caption).toBe("Photo — NASA");
   });
 
+  it("parses a diagram's heading, layout, and nodes (with an active marker)", () => {
+    const { fields } = sceneContent({
+      kind: "diagram",
+      label: "Stack",
+      visual: 'diagram — "Layer one of four" | stack | "Prompt*; Context; Loop; Harness"',
+    });
+    expect(fields.heading).toBe("Layer one of four");
+    expect(fields.layout).toBe("stack");
+    expect(fields.nodes).toEqual([
+      { label: "Prompt", active: true },
+      { label: "Context", active: false },
+      { label: "Loop", active: false },
+      { label: "Harness", active: false },
+    ]);
+  });
+
+  it("defaults an unknown diagram layout to flow", () => {
+    const { fields } = sceneContent({ kind: "diagram", label: "X", visual: 'diagram — "H" | sideways | "A; B"' });
+    expect(fields.layout).toBe("flow");
+  });
+
   it("parses a video src and flags a missing src", () => {
     const ok = sceneContent({ kind: "video", label: "B", visual: 'video — "assets/x/clip.mp4"' });
     expect(ok.fields.src).toBe("assets/x/clip.mp4");
@@ -142,5 +163,43 @@ describe("assembleProps", () => {
     expect(props.sections.map((s) => s.kind)).toEqual(["title", "bars", "text"]);
     expect(props.sections.reduce((a, s) => a + s.durationInFrames, 0)).toBe(96);
     expect(props.captions).toHaveLength(10);
+  });
+
+  it("turns image-backed sections into montage, but bars keep their chart", () => {
+    const sections = parseScript(script); // title, bars, text
+    const captions = [{ text: "Hello", startMs: 0, endMs: 1500 }, { text: "Final", startMs: 1500, endMs: 3200 }];
+    const { props } = assembleProps({
+      sections,
+      captionWords: captions,
+      voiceoverSrc: "x.mp3",
+      fps: 30,
+      totalFrames: 96,
+      imagesBySection: [[{ src: "a.png" }, { src: "b.png" }], [{ src: "c.png" }], []],
+    });
+    expect(props.sections[0].kind).toBe("montage"); // title + images → montage
+    expect(props.sections[0].images).toHaveLength(2);
+    expect(props.sections[0].heading).toBe("Big Title");
+    expect(props.sections[1].kind).toBe("bars"); // bars keeps its chart even with an image
+    expect(props.sections[2].kind).toBe("text"); // no images → plain card
+  });
+
+  it("keeps a diagram section as a diagram even when images are present", () => {
+    const sections = parseScript(
+      '## Stack (diagram)\n\nSpoken words here.\n[VISUAL: diagram — "The stack" | stack | "Prompt*; Context; Loop"]\n',
+    );
+    const captions = [{ text: "Spoken", startMs: 0, endMs: 3200 }];
+    const { props } = assembleProps({
+      sections,
+      captionWords: captions,
+      voiceoverSrc: "x.mp3",
+      fps: 30,
+      totalFrames: 96,
+      imagesBySection: [[{ src: "a.png" }, { src: "b.png" }]], // images exist, but diagram wins
+    });
+    expect(props.sections[0].kind).toBe("diagram");
+    expect(props.sections[0].layout).toBe("stack");
+    expect(props.sections[0].nodes.map((nd) => nd.label)).toEqual(["Prompt", "Context", "Loop"]);
+    expect(props.sections[0].nodes[0].active).toBe(true);
+    expect(props.sections[0].images).toBeUndefined();
   });
 });

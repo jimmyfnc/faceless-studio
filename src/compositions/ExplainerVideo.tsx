@@ -12,6 +12,8 @@ import { TextScene } from "../scenes/TextScene";
 import { BarChartScene } from "../scenes/BarChartScene";
 import { ImageScene } from "../scenes/ImageScene";
 import { VideoScene } from "../scenes/VideoScene";
+import { MontageScene } from "../scenes/MontageScene";
+import { DiagramScene } from "../scenes/DiagramScene";
 import { CaptionTrack } from "../scenes/CaptionTrack";
 import { BrandProvider } from "../theme/BrandProvider";
 import { brandSchema, defaultBrand } from "../theme/tokens";
@@ -67,6 +69,24 @@ const sectionSchema = z.discriminatedUnion("kind", [
     muted: z.boolean().optional(),
     caption: z.string().optional(),
   }),
+  z.object({
+    kind: z.literal("montage"),
+    durationInFrames: z.number(),
+    /** Full-frame images that crossfade in sequence over the section. */
+    images: z.array(z.object({ src: z.string() })),
+    /** Concept label shown top-left. */
+    heading: z.string().optional(),
+  }),
+  z.object({
+    kind: z.literal("diagram"),
+    durationInFrames: z.number(),
+    /** Concept label shown top-left. */
+    heading: z.string().optional(),
+    /** `flow` (pipeline), `steps` (numbered list), or `stack` (layer cake). */
+    layout: z.enum(["flow", "steps", "stack"]).default("flow"),
+    /** Nodes, revealed one at a time; mark the current one `active`. */
+    nodes: z.array(z.object({ label: z.string(), active: z.boolean().optional() })),
+  }),
 ]);
 
 export const explainerSchema = z.object({
@@ -116,6 +136,23 @@ const Scene: React.FC<{ section: Section }> = ({ section }) => {
           fit={section.fit}
           muted={section.muted}
           caption={section.caption}
+        />
+      );
+    case "montage":
+      return (
+        <MontageScene
+          images={section.images}
+          heading={section.heading}
+          durationInFrames={section.durationInFrames}
+        />
+      );
+    case "diagram":
+      return (
+        <DiagramScene
+          heading={section.heading}
+          layout={section.layout}
+          nodes={section.nodes}
+          durationInFrames={section.durationInFrames}
         />
       );
   }

@@ -11,7 +11,7 @@
  * props.json — polish the draft in Studio afterwards.
  */
 import { readFile, writeFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { parseMedia } from "@remotion/media-parser";
 import { nodeReader } from "@remotion/media-parser/node";
@@ -63,17 +63,31 @@ if (voFile) {
   }
 }
 
+// Per-section images: public/assets/<ch>/<slug>/s01*.png → montage for section 1, etc.
+const imgFiles = existsSync(assetDir)
+  ? readdirSync(assetDir).filter((f) => /\.(png|jpe?g|webp)$/i.test(f)).sort()
+  : [];
+const imagesBySection = sections.map((_, i) => {
+  const prefix = `s${String(i + 1).padStart(2, "0")}`;
+  return imgFiles.filter((f) => f.startsWith(prefix)).map((f) => ({ src: `assets/${channel}/${slug}/${f}` }));
+});
 const { props, reports, flags } = assembleProps({
   sections,
   captionWords: words,
   voiceoverSrc,
   fps: FPS,
   totalFrames,
+  imagesBySection,
 });
 
 await writeFile(join(videoDir, "props.json"), JSON.stringify(props, null, 2) + "\n");
 
-console.log(`Drafted ${sections.length} sections → ${join(videoDir, "props.json")}`);
+const kindCount = (k) => props.sections.filter((s) => s.kind === k).length;
+const mix = ["montage", "diagram", "bars", "title", "text", "image", "video"]
+  .map((k) => (kindCount(k) ? `${kindCount(k)} ${k}` : null))
+  .filter(Boolean)
+  .join(", ");
+console.log(`Drafted ${sections.length} sections (${mix}) → ${join(videoDir, "props.json")}`);
 console.log(`  durations: ${props.sections.map((s) => s.durationInFrames).join(" + ")} = ${totalFrames} frames`);
 for (const r of reports) {
   if (r.lowConfidence) {

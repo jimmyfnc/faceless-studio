@@ -10,7 +10,8 @@
  * future web app call these. All four exports are unit-tested.
  */
 
-const KINDS = ["title", "bars", "text", "image", "video"];
+const KINDS = ["title", "bars", "text", "image", "video", "diagram"];
+const DIAGRAM_LAYOUTS = ["flow", "steps", "stack"];
 
 /* ── Script parsing ──────────────────────────────────────────────────────── */
 
@@ -106,6 +107,23 @@ export function sceneContent(section) {
     if (!src) flags.push(`${section.kind} "${section.label}": no src in [VISUAL]`);
     return { fields: { src: src || "", caption: caption || undefined }, flags };
   }
+  if (section.kind === "diagram") {
+    // `diagram — "Heading" | flow | "Node A; Node B*; Node C"`  (a `*` marks the active node)
+    const [heading, layoutRaw, nodesRaw] = splitPipe(payload);
+    const layout = DIAGRAM_LAYOUTS.includes((layoutRaw || "").toLowerCase())
+      ? layoutRaw.toLowerCase()
+      : "flow";
+    const nodes = (nodesRaw || "")
+      .split(";")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((label) => {
+        const active = label.endsWith("*");
+        return { label: active ? label.slice(0, -1).trim() : label, active };
+      });
+    if (!nodes.length) flags.push(`diagram "${section.label}": no nodes in [VISUAL]`);
+    return { fields: { heading: heading || section.label, layout, nodes }, flags };
+  }
   return { fields: {}, flags: [`unknown kind "${section.kind}"`] };
 }
 
@@ -192,14 +210,35 @@ export function alignSectionFrames(sections, captionWords, fps, totalFrames) {
 /**
  * Assemble a props.json object (validates against explainerSchema) from parsed
  * sections + caption words, with durations aligned to the voice.
- * @returns {{ props: object, reports: object[] }}
+ *
+ * If `imagesBySection[i]` has images, that section becomes a **montage** scene
+ * (the images crossfade behind the caption with the section's text as the
+ * heading) — that's the dense, image-backed look. `bars` sections keep their
+ * chart. Sections with no images fall back to the plain title/text card.
+ * @returns {{ props: object, reports: object[], flags: string[] }}
  */
-export function assembleProps({ sections, captionWords, voiceoverSrc, fps, totalFrames }) {
+export function assembleProps({ sections, captionWords, voiceoverSrc, fps, totalFrames, imagesBySection = [] }) {
   const { frames, reports } = alignSectionFrames(sections, captionWords, fps, totalFrames);
   const props = {
     voiceoverSrc,
     sections: sections.map((s, si) => {
       const { fields } = sceneContent(s);
+      // A `diagram` section is engine-drawn (accurate, no images) — it opts out
+      // of the montage upgrade even when matching s<NN> images exist.
+      if (s.kind === "diagram") {
+        return {
+          kind: "diagram",
+          durationInFrames: frames[si],
+          heading: fields.heading,
+          layout: fields.layout,
+          nodes: fields.nodes,
+        };
+      }
+      const images = imagesBySection[si] || [];
+      if (s.kind !== "bars" && images.length) {
+        const heading = fields.text || fields.heading || s.label || undefined;
+        return { kind: "montage", durationInFrames: frames[si], images, heading };
+      }
       return { kind: s.kind, durationInFrames: frames[si], ...fields };
     }),
     captions: captionWords.map(({ text, startMs, endMs }) => ({ text, startMs, endMs })),
