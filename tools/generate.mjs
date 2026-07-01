@@ -16,6 +16,9 @@ import { join } from "node:path";
 import { buildCredits } from "./lib/licensing.mjs";
 
 const HOST = (process.env.COMFYUI_HOST || "http://127.0.0.1:8188").replace(/\/$/, "");
+// Per-image poll timeout. Heavy models (e.g. Qwen-Image, ~19GB) can take minutes
+// to load on the FIRST image, so default generously; override via env if needed.
+const GEN_TIMEOUT_MS = Number(process.env.COMFYUI_TIMEOUT_MS) || 600_000;
 const DEFAULT_STYLE =
   "clean isometric tech illustration, dark background, neon green and teal accents, " +
   "cinematic lighting, highly detailed, no text, no words, no watermark";
@@ -108,7 +111,7 @@ async function runComfy(wf) {
   const id = queued.prompt_id;
   if (!id) throw new Error(`no prompt_id: ${JSON.stringify(queued.node_errors ?? queued)}`);
   const start = Date.now();
-  while (Date.now() - start < 180_000) {
+  while (Date.now() - start < GEN_TIMEOUT_MS) {
     const res = await fetch(`${HOST}/history/${id}`);
     if (res.ok) {
       const data = await res.json();

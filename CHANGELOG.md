@@ -4,6 +4,24 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.14.0] — 2026-07-01
+
+Qwen-Image — a sharper, commercial-safe image model option (better hands, and
+negative prompts that actually work).
+
+### Added
+- **`workflows/qwen-image.json`** — Qwen-Image (Apache-2.0) via ComfyUI's native
+  support (no custom nodes). Much stronger anatomy than FLUX schnell, and it runs
+  at real CFG so **negative prompts apply** — an anatomy/text negative is baked
+  into the workflow. Use it with
+  `npm run generate -- <ch> <slug> <prompts.json> --workflow workflows/qwen-image.json`.
+  Best for character/hand shots; ~20 steps (slower than schnell's 4-step).
+
+### Fixed
+- **`generate`** no longer times out on the first image of a heavy model. Qwen's
+  ~19 GB load can exceed the old 180 s per-image poll window; the timeout is now
+  600 s and configurable via `COMFYUI_TIMEOUT_MS`.
+
 ## [0.13.0] — 2026-06-30
 
 Deeper research briefs — scripts that actually teach.
