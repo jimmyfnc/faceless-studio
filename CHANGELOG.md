@@ -4,6 +4,27 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.15.0] — 2026-07-01
+
+Image manifest — a video's generated images become first-class content, with
+per-image model routing.
+
+### Added
+- **`channels/<ch>/videos/<slug>/images.json`** declares every generated image
+  next to the script it illustrates: `{ name, label, prompt, workflow?, negative? }`
+  plus manifest-wide `defaults`. Prompts are now versioned with the video instead
+  of living in ad-hoc files, so any image can be regenerated later.
+- **`npm run generate -- <ch> <slug>`** now reads that manifest by default (an
+  explicit prompts-file path still works). New selection modes: **`--only a,b`**
+  regenerates named entries; **`--flagged`** regenerates exactly what the last
+  `npm run qc` flagged — closing the QC → regenerate loop.
+- **Per-image model routing:** an entry's `workflow` (e.g. `"qwen-image"` for
+  character/hand shots) overrides the manifest default, which overrides
+  `--workflow`. Provenance in `credits.json` records which model made each file.
+- **Per-image negative prompts:** entry/default `negative` is appended to the
+  workflow's negative (effective on real-CFG models like Qwen; schnell ignores it).
+- The manifest helpers (`tools/lib/images.mjs`) are pure and unit-tested.
+
 ## [0.14.0] — 2026-07-01
 
 Qwen-Image — a sharper, commercial-safe image model option (better hands, and
