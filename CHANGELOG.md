@@ -4,6 +4,19 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.17.0] — 2026-07-01
+
+Livelier montage motion — image-backed sections stop feeling like a slideshow.
+
+### Changed
+- **Montage images now truly crossfade** — the outgoing image holds while the
+  incoming one fades in on top, so there's no dip to the background between
+  images (and a section no longer opens on a dark frame).
+- **Each image gets its own camera move.** Instead of the same slow zoom on
+  every image, images cycle through six Ken Burns moves — push in, pull back,
+  pan left/right, diagonal drifts — so two consecutive images never move the
+  same way. Pan distances stay inside the zoom's over-scan, so edges never show.
+
 ## [0.16.0] — 2026-07-01
 
 One-step curation — picking a winner is now a command, not manual file surgery.
