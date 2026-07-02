@@ -33,11 +33,10 @@ npm run render -- <channel> <slug> [outFile]  # render → out/<channel>-<slug>.
 # Engine-level (no channel): operate on the built-in sample directly.
 npx remotion still ExplainerVideo out/frame.png --frame=60   # quick single-frame check
 
-# Generate visuals from your ComfyUI (must be running):
-node tools/comfyui-generate.mjs \
-  --workflow workflows/txt2img.json \
-  --out public/assets/<channel>/<slug> \
-  --prompt "isometric diagram, clean vector, dark background" --prompt-node 6
+# Generate the video's images from its images.json (ComfyUI must be running):
+npm run generate -- <channel> <slug> [--candidates N] [--only s03a,s05b | --flagged]
+npm run qc -- <channel> <slug>                    # hallucination check → qc-report.json
+npm run pick -- <channel> <slug> s03a=1 s05b=3    # promote candidate winners
 ```
 
 ## MCP servers (`.mcp.json`)
@@ -202,15 +201,46 @@ npm run studio -- <channel> <slug>
 npm run render -- <channel> <slug>
 ```
 
-## ComfyUI visuals
+## Generated images (images.json → generate → qc → pick)
 
-Your ComfyUI lives at `D:\GitHub\ComfyUI`.
+A video's generated images are **content**, declared in
+`channels/<channel>/videos/<slug>/images.json` next to the script:
 
-1. Start ComfyUI (default `http://127.0.0.1:8188`).
-2. Build a workflow, then **gear → Save (API Format)** into `./workflows/`.
-3. Run `tools/comfyui-generate.mjs` (see Commands). Images land in
-   `public/assets/<channel>/<slug>/`.
-4. Reference them: `<Img src={staticFile("assets/<channel>/<slug>/file.png")} />`.
+```json
+{
+  "defaults": { "workflow": "flux-schnell", "negative": "text, watermark, extra fingers" },
+  "images": [
+    { "name": "s01a", "label": "Hook", "prompt": "a friendly clay robot waving hello" },
+    { "name": "s05b", "label": "Checks", "prompt": "...", "workflow": "qwen-image" }
+  ]
+}
+```
+
+- **Names drive the montage:** auto-draft turns `s01*.png` into section 1's
+  montage images, `s02*.png` into section 2's, etc. (candidate files like
+  `s01a-2.png` are ignored until picked).
+- **Per-image model routing:** an entry's `workflow` overrides the default.
+  Rule of thumb: `qwen-image` (Apache, real CFG — negative prompts work, strong
+  anatomy, ~50s/image) for character/hand shots; `flux-schnell` (Apache,
+  4-step, ~5s/image) for everything else. The channel's `style.json`
+  `imageStyle` is appended to every prompt.
+
+The loop (ComfyUI must be running; start it, generate, then stop it to free VRAM):
+
+```bash
+npm run generate -- <channel> <slug>                 # all entries → public/assets/<ch>/<slug>/
+npm run qc -- <channel> <slug>                       # vision QC → qc-report.json (fails on flags)
+# reword flagged prompts in images.json, then:
+npm run generate -- <channel> <slug> --flagged --candidates 3
+npm run pick -- <channel> <slug> s03a=1 s05b=3       # promote winners, clean candidates + credits
+npm run qc -- <channel> <slug>                       # confirm clean
+```
+
+`generate --only s03a,s05b` regenerates specific entries. Every image is
+registered in `credits.json` as your own (license `own`) with the model that
+made it. QC checks for baked text, anatomy errors (extra/fused hands), garbled
+shapes, and off-brand style — agent-driven by default, or bring your own vision
+endpoint (`QC_VISION_BASE_URL` + `QC_VISION_MODEL`; a local Ollama llava works).
 
 Other generators available in your setup: the `gemini-imagegen` / `nano-banana-2`
 skills for quick stills, and the Blender MCP for 3D scenes.

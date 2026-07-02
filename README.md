@@ -77,6 +77,9 @@ npm run transcribe -- <channel> <slug>     # voiceover → captions.json (Whispe
 npm run research -- plan <channel> "<topic>"   # idea → single video or series; brief/script too (BYO LLM)
 npm run draft -- <channel> <slug>          # script.md + captions → props.json (voice-aligned)
 npm run assets -- <channel> <slug> "query" # source copyright-safe media → credits.json
+npm run generate -- <channel> <slug>       # ComfyUI images from the video's images.json
+npm run qc -- <channel> <slug>             # vision-check generated images → qc-report.json
+npm run pick -- <channel> <slug> s03a=1    # promote candidate winners + update credits
 npm run lint                               # eslint + tsc
 npm test                                   # vitest (schema, brand merge, captions)
 npm run upgrade                            # upgrade Remotion (verify a render after)

@@ -64,8 +64,12 @@ if (voFile) {
 }
 
 // Per-section images: public/assets/<ch>/<slug>/s01*.png → montage for section 1, etc.
+// Candidate files from `generate --candidates` (name-1.png, name-2.png, …) are
+// excluded — only picked/canonical images belong in a draft.
 const imgFiles = existsSync(assetDir)
-  ? readdirSync(assetDir).filter((f) => /\.(png|jpe?g|webp)$/i.test(f)).sort()
+  ? readdirSync(assetDir)
+      .filter((f) => /\.(png|jpe?g|webp)$/i.test(f) && !/-\d+\.(png|jpe?g|webp)$/i.test(f))
+      .sort()
   : [];
 const imagesBySection = sections.map((_, i) => {
   const prefix = `s${String(i + 1).padStart(2, "0")}`;

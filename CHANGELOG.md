@@ -4,6 +4,23 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.16.0] — 2026-07-01
+
+One-step curation — picking a winner is now a command, not manual file surgery.
+
+### Added
+- **`npm run pick -- <channel> <slug> s03a=1 s05b=3`** promotes each winning
+  candidate from `generate --candidates N` to the canonical filename, deletes the
+  other candidates, and rewrites `credits.json` so the winner's provenance (which
+  model made it) carries over. Pure planning logic (`tools/lib/pick.mjs`), tested.
+- The full image loop is now: edit `images.json` → `generate` → `qc` → reword
+  flagged prompts → `generate --flagged --candidates 3` → `pick` → `qc` clean.
+  Documented in WORKFLOW.md.
+
+### Fixed
+- Auto-draft no longer sweeps unpicked candidate files (`s03a-2.png`, …) into a
+  section's montage — only canonical images are drafted.
+
 ## [0.15.0] — 2026-07-01
 
 Image manifest — a video's generated images become first-class content, with
