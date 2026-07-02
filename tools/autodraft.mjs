@@ -63,12 +63,14 @@ if (voFile) {
   }
 }
 
-// Per-section images: public/assets/<ch>/<slug>/s01*.png → montage for section 1, etc.
-// Candidate files from `generate --candidates` (name-1.png, name-2.png, …) are
-// excluded — only picked/canonical images belong in a draft.
+// Per-section media: public/assets/<ch>/<slug>/s01*.png|mp4 → montage for
+// section 1, etc. Short generated clips (mp4/webm) mix with stills — the
+// montage animates both. Candidate files from `generate --candidates`
+// (name-1.png, …) are excluded — only picked/canonical media belongs in a draft.
+const MEDIA_RE = /\.(png|jpe?g|webp|mp4|webm)$/i;
 const imgFiles = existsSync(assetDir)
   ? readdirSync(assetDir)
-      .filter((f) => /\.(png|jpe?g|webp)$/i.test(f) && !/-\d+\.(png|jpe?g|webp)$/i.test(f))
+      .filter((f) => MEDIA_RE.test(f) && !/-\d+\.(png|jpe?g|webp|mp4|webm)$/i.test(f))
       .sort()
   : [];
 const imagesBySection = sections.map((_, i) => {

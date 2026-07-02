@@ -1,6 +1,8 @@
-import { AbsoluteFill, Img, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, OffthreadVideo, interpolate, useCurrentFrame } from "remotion";
 import { useBrand } from "../theme/BrandProvider";
 import { resolveSrc } from "./ImageScene";
+
+const isVideoSrc = (src: string) => /\.(mp4|webm|mov)$/i.test(src.split("?")[0]);
 
 /**
  * Visual-density scene: full-frame images that crossfade in sequence over the
@@ -61,17 +63,22 @@ export const MontageScene: React.FC<{
         const s = move.from.s + (move.to.s - move.from.s) * t;
         const x = move.from.x + (move.to.x - move.from.x) * t;
         const y = move.from.y + (move.to.y - move.from.y) * t;
+        const mediaStyle = {
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transform: `translate(${x}px, ${y}px) scale(${s})`,
+        } as const;
         return (
           <AbsoluteFill key={i} style={{ opacity }}>
-            <Img
-              src={resolveSrc(img.src)}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transform: `translate(${x}px, ${y}px) scale(${s})`,
-              }}
-            />
+            {isVideoSrc(img.src) ? (
+              // Animated beat: a short generated clip (muted — the VO is the
+              // audio). If the clip is shorter than its slot, Remotion holds
+              // its last frame, so a 5s clip covers a 7s dwell gracefully.
+              <OffthreadVideo src={resolveSrc(img.src)} muted style={mediaStyle} />
+            ) : (
+              <Img src={resolveSrc(img.src)} style={mediaStyle} />
+            )}
           </AbsoluteFill>
         );
       })}

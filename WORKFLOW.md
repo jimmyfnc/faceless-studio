@@ -242,6 +242,25 @@ made it. QC checks for baked text, anatomy errors (extra/fused hands), garbled
 shapes, and off-brand style — agent-driven by default, or bring your own vision
 endpoint (`QC_VISION_BASE_URL` + `QC_VISION_MODEL`; a local Ollama llava works).
 
+### Animated beats (image → video)
+
+Turn any generated still into a ~5s motion clip that takes over its montage
+slot — the highest-impact cure for "too many stills":
+
+```bash
+npm run animate -- <channel> <slug> s01a "the robot waves slowly, its antenna bobs, gentle camera push in"
+```
+
+Uses ComfyUI's native Wan 2.2 support (5B ti2v; `workflows/wan22-i2v.json` —
+needs the Wan diffusion/text-encoder/VAE files in ComfyUI's `models/`).
+`<name>.mp4` replaces `<name>.png` in the asset folder (the still is archived
+in `stills/`), credits carry over, and auto-draft mixes clips and stills in the
+same montage. Describe the *motion*, not the subject; clips shorter than their
+slot hold their last frame. QC the result like a still — motion can warp;
+regenerate with a reworded motion prompt if a character drifts. A clip takes a
+few minutes on a good GPU; animate the hook + one or two hero beats, not
+everything.
+
 Other generators available in your setup: the `gemini-imagegen` / `nano-banana-2`
 skills for quick stills, and the Blender MCP for 3D scenes.
 

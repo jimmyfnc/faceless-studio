@@ -4,6 +4,22 @@ All notable changes to faceless-studio, newest first. Written for the user
 ("what changed for me"). Follows [Keep a Changelog](https://keepachangelog.com/)
 and [Semantic Versioning](https://semver.org/) (`0.x` pre-launch → `1.0.0` at first shipped video).
 
+## [0.18.0] — 2026-07-01
+
+Animated beats — turn any generated still into a short motion clip that plays
+inside its montage slot.
+
+### Added
+- **`npm run animate -- <ch> <slug> <name> "<motion prompt>"`** animates a
+  generated still into a ~5s clip with ComfyUI's native Wan 2.2 support (5B
+  image→video, `workflows/wan22-i2v.json`). `<name>.mp4` replaces `<name>.png`
+  in the asset folder (the still is archived in `stills/`), and the beat's
+  credits entry carries over with the extra model recorded.
+- **Montage sections mix clips and stills**: an entry whose `src` is
+  `.mp4/.webm/.mov` renders as a muted video with the same crossfade and camera
+  move; a clip shorter than its slot holds its last frame. Auto-draft picks up
+  `s<NN>*.mp4` alongside images.
+
 ## [0.17.0] — 2026-07-01
 
 Livelier montage motion — image-backed sections stop feeling like a slideshow.

@@ -1,6 +1,6 @@
 {
   "name": "faceless-studio",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "Code-driven faceless explainer videos with Remotion",
   "repository": {},
   "license": "UNLICENSED",
@@ -31,6 +31,7 @@
     "short": "node tools/short.mjs",
     "transcribe": "node tools/transcribe.mjs",
     "draft": "node tools/autodraft.mjs",
+    "animate": "node tools/animate.mjs",
     "assets": "node tools/assets.mjs",
     "generate": "node tools/generate.mjs",
     "pick": "node tools/pick.mjs",

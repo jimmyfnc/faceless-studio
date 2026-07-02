@@ -4,7 +4,7 @@ Code-driven **faceless explainer videos** with Remotion. The creator's recorded
 voice drives the timeline; charts/diagrams/b-roll sync to the narration. Full
 production pipeline and commands live in [WORKFLOW.md](WORKFLOW.md).
 
-**Current version: 0.17.0** (pre-launch; bumps to `1.0.0` when the channel ships
+**Current version: 0.18.0** (pre-launch; bumps to `1.0.0` when the channel ships
 its first real video).
 
 ## What this project is
@@ -30,6 +30,7 @@ npm run assets -- <channel> <slug> "query"    # license-safe media (Openverse/ow
 npm run generate -- <channel> <slug> [--candidates N] [--only a,b|--flagged]  # images.json → ComfyUI
 npm run qc -- <channel> <slug>                # hallucination check → qc-report.json
 npm run pick -- <channel> <slug> s03a=1       # promote candidate winners + update credits
+npm run animate -- <channel> <slug> s01a "<motion prompt>"  # still → 5s Wan 2.2 clip in its montage slot
 npm test                                      # vitest: schema/fixture, brand merge, caption merge
 ./scripts/install-hooks.sh                    # run once per clone to install the pre-commit hook
 ```
